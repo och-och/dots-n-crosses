@@ -26,10 +26,7 @@ function deleteLine(index: number) {
 				<input type="color" v-model="defaultColor" />
 			</label>
 			<h2>Center Dot</h2>
-			<label>
-				<p>Center dot size | {{ centerDotSize }}</p>
-				<input type="range" min="0" max="150" step="0" v-model.number="centerDotSize" />
-			</label>
+			<NumberInput title="Size" :max="150" v-model="centerDotSize"/>
 
 			<h2>Lines</h2>
 			<LineEditor
