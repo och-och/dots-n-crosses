@@ -1,6 +1,12 @@
 export { }
 
 declare global {
+	interface Crosshair {
+		dots: Dot[]
+		lines: Line[]
+		style: CustomProperties
+	}
+
 	interface Line {
 		offset: number
 		length: number
@@ -14,6 +20,8 @@ declare global {
 	interface Dot {
 		position: { x: number, y: number }
 		size: number
+		mirrorX: bool
+		mirrorY: bool
 		style: CustomProperties
 	}
 

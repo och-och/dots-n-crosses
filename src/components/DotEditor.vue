@@ -3,16 +3,15 @@ import NumberInput from "@/components/NumberInput.vue"
 
 const emit = defineEmits(["update:model-value", "delete"])
 const { modelValue } = defineProps<{
-	modelValue: Line
+	modelValue: Dot
 }>()
 </script>
 
 <template>
 	<div>
-		<NumberInput title="Offset" :max="100" v-model="modelValue.offset" />
-		<NumberInput title="Length" :max="100" v-model="modelValue.length" />
-		<NumberInput title="Thickness" :max="100" v-model="modelValue.thickness" />
-		<NumberInput title="Angle" :max="360" v-model="modelValue.angle" />
+		<NumberInput title="X" :min="-150" :max="150" v-model="modelValue.position.x" />
+		<NumberInput title="Y" :min="-150" :max="150" v-model="modelValue.position.y" />
+		<NumberInput title="Size" :max="150" v-model="modelValue.size" />
 		<p>
 			Mirror
 			<input type="checkbox" v-model="modelValue.mirrorX"> x

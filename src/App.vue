@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
-import NumberInput from "@/components/NumberInput.vue"
+import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
-import DisplayLine from "./components/DisplayLine.vue"
-import DisplayDot from "./components/DisplayDot.vue"
-import { stylize } from "./utils/styles/stylize";
+import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
 
-const style = ref<CustomProperties>({color: "#ff6ab5"})
-const centerDot = ref<Dot>({ position: { x: 0, y: 0}, size: 3, style: {} })
-const lines = reactive<Line[]>([])
+const crosshair = ref<Crosshair>({
+	dots: [],
+	lines: [],
+	style: {
+		color: "#ff6ab5"
+	}
+})
 
 function addLine() {
-	lines.push({
+	crosshair.value.lines.push({
 		angle: 0,
 		length: 5,
 		offset: 5,
@@ -23,7 +25,15 @@ function addLine() {
 }
 
 function deleteLine(index: number) {
-	lines.splice(index, 1)
+	crosshair.value.lines.splice(index, 1)
+}
+
+function addDot() {
+	crosshair.value.dots.push({ position: { x: 0, y: 0}, size: 3, mirrorX: false, mirrorY: false, style: {} })
+}
+
+function deleteDot(index: number) {
+	crosshair.value.dots.splice(index, 1)
 }
 </script>
 
@@ -31,50 +41,44 @@ function deleteLine(index: number) {
 	<main>
 		<form class="options" @submit.prevent="">
 			<h1>Options</h1>
-			<div>
-				<h2>Color</h2>
+			<div class="section">
+				<h2>Style</h2>
 				<div>
 					<label>
 						<p>
 							Color
-							<input type="text" v-model="style.color" />
+							<input type="text" v-model="crosshair.style.color" />
 						</p>
 					</label>
-					<input type="color" v-model="style.color" />
+					<input type="color" v-model="crosshair.style.color" />
 				</div>
 			</div>
 
-			<div>
-				<h2>Center Dot</h2>
-				<NumberInput title="Size" :max="150" v-model="centerDot.size" />
+			<div class="section">
+				<h2>Dots</h2>
+				<DotEditor
+					v-for="(_, index) in crosshair.dots"
+					:key="index"
+					v-model="crosshair.dots[index]"
+					@delete="deleteDot(index)"
+				/>
+				<button type="button" @click="addDot">+</button>
 			</div>
 
-			<div>
+			<div class="section">
 				<h2>Lines</h2>
 				<LineEditor
-					v-for="(_, index) in lines"
+					v-for="(_, index) in crosshair.lines"
 					:key="index"
-					v-model="lines[index]"
+					v-model="crosshair.lines[index]"
 					@delete="deleteLine(index)"
 				/>
-				<button @click="addLine">+</button>
+				<button type="button" @click="addLine">+</button>
 			</div>
 		</form>
 		<div class="preview">
 			<h1>Preview</h1>
-			<div class="preview-render">
-				<svg version="1.1" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
-					<g
-						:style="stylize(style)"
-						transform="translate(150, 150)"
-					>
-						<!-- Center Dot -->
-						<DisplayDot :dot="centerDot" />
-						<!-- Crosshair -->
-						<DisplayLine v-for="line in lines" :key="line.angle" :line="line" />
-					</g>
-				</svg>
-			</div>
+			<DisplayCrosshair :crosshair="crosshair"/>
 		</div>
 	</main>
 </template>
@@ -90,12 +94,5 @@ main {
 .preview {
 	position: sticky;
 	top: 2em;
-}
-
-.preview-render {
-	display: flex;
-	place-content: center;
-	place-items: center;
-	background-color: antiquewhite;
 }
 </style>

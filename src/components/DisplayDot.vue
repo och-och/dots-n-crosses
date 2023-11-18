@@ -10,7 +10,14 @@ defineProps<{
 	<circle
 		:cx="dot.position.x"
 		:cy="dot.position.y"
-		:r="dot.size"
+		:r="dot.size / 2"
+		:style="stylize(dot.style)"
+	/>
+	<circle
+		v-if="dot.mirrorX || dot.mirrorY"
+		:cx="dot.position.x * (dot.mirrorX ? -1 : 1)"
+		:cy="dot.position.y * (dot.mirrorY ? -1 : 1)"
+		:r="dot.size / 2"
 		:style="stylize(dot.style)"
 	/>
 </template>
