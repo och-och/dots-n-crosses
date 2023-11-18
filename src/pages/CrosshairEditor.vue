@@ -1,20 +1,42 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, toRaw } from "vue"
 import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
+import { useRoute, useRouter } from "vue-router";
+import { useCrosshairs } from "@/stores/crosshairs";
+import { storeToRefs } from "pinia";
 
 defineEmits<{
 	(e: "save", crosshair: Crosshair): void
 }>()
 
-const crosshair = ref<Crosshair>({
-	dots: [],
-	lines: [],
-	style: {
-		color: "#ff6ab5"
+const router = useRouter()
+const route = useRoute()
+const editingIndex = (() => {
+	if (route.name != "edit") return null
+	const number = Number.parseInt(String(route.params.index))
+	if (isNaN(number)) return null
+	return number
+})()
+
+const crosshairsStore = useCrosshairs()
+const { crosshairs } = storeToRefs(crosshairsStore)
+const { deleteCrosshair, addCrosshair } = crosshairsStore
+
+const crosshair = ref<Crosshair>((()=>{
+	if (editingIndex !== null) {
+		return structuredClone(toRaw(crosshairs.value[editingIndex]))
 	}
-})
+
+	return {
+		dots: [],
+		lines: [],
+		style: {
+			color: "#ff6ab5"
+		}
+	}
+})())
 
 function addLine() {
 	crosshair.value.lines.push({
@@ -44,6 +66,14 @@ function addDot() {
 
 function deleteDot(index: number) {
 	crosshair.value.dots.splice(index, 1)
+}
+
+function save() {
+	if (editingIndex !== null) {
+		deleteCrosshair(editingIndex)
+	}
+	addCrosshair(crosshair.value)
+	router.back()
 }
 </script>
 
@@ -89,7 +119,7 @@ function deleteDot(index: number) {
 		<div class="preview">
 			<h1>Preview</h1>
 			<DisplayCrosshair :crosshair="crosshair" />
-			<button type="button" @click="$emit('save', crosshair)">💾 Save</button>
+			<button type="button" @click="save">💾 Save</button>
 		</div>
 	</main>
 </template>

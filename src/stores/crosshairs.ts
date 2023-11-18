@@ -1,6 +1,6 @@
-import { validateCrosshairs } from "@/utils/styles/crosshairValidator";
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { validateCrosshairs } from "@/utils/styles/crosshairValidator"
+import { defineStore } from "pinia"
+import { ref } from "vue"
 
 export const useCrosshairs = defineStore("crosshairs", () => {
 	const crosshairs = ref<Crosshair[]>([])
@@ -24,6 +24,9 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 	}
 
 	function deleteCrosshair(index: number) {
+		if (index < 0 || index >= crosshairs.value.length) {
+			return
+		}
 		crosshairs.value.splice(index, 1)
 		save()
 	}
