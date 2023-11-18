@@ -1,4 +1,4 @@
-export { }
+export {}
 
 declare global {
 	interface Crosshair {
@@ -18,7 +18,7 @@ declare global {
 	}
 
 	interface Dot {
-		position: { x: number, y: number }
+		position: { x: number; y: number }
 		size: number
 		mirrorX: bool
 		mirrorY: bool

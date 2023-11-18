@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { stylize } from '@/utils/styles/stylize';
+import { stylize } from "@/utils/styles/stylize"
 
 defineProps<{
 	dot: Dot

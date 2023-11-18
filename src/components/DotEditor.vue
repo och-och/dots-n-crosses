@@ -17,13 +17,48 @@ function update(dot: Dot) {
 
 <template>
 	<div>
-		<NumberInput title="X" :min="-150" :max="150" :model-value="modelValue.position.x" @update:model-value="x => update({ ...modelValue, position: { ...modelValue.position, x } })" />
-		<NumberInput title="Y" :min="-150" :max="150" :model-value="modelValue.position.y" @update:model-value="y => update({ ...modelValue, position: { ...modelValue.position, y } })"/>
-		<NumberInput title="Size" :max="150" :model-value="modelValue.size" @update:model-value="size => update({ ...modelValue, size })" />
+		<NumberInput
+			title="X"
+			:min="-150"
+			:max="150"
+			:model-value="modelValue.position.x"
+			@update:model-value="
+				x => update({ ...modelValue, position: { ...modelValue.position, x } })
+			"
+		/>
+		<NumberInput
+			title="Y"
+			:min="-150"
+			:max="150"
+			:model-value="modelValue.position.y"
+			@update:model-value="
+				y => update({ ...modelValue, position: { ...modelValue.position, y } })
+			"
+		/>
+		<NumberInput
+			title="Size"
+			:max="150"
+			:model-value="modelValue.size"
+			@update:model-value="size => update({ ...modelValue, size })"
+		/>
 		<p>
 			Mirror
-			<input type="checkbox" :value="modelValue.mirrorX" @input="update({ ...modelValue, mirrorX: ($event.target as HTMLInputElement)?.checked })"> x
-			<input type="checkbox" :value="modelValue.mirrorY" @input="update({ ...modelValue, mirrorY: ($event.target as HTMLInputElement)?.checked })"> y
+			<input
+				type="checkbox"
+				:value="modelValue.mirrorX"
+				@input="
+					update({ ...modelValue, mirrorX: ($event.target as HTMLInputElement)?.checked })
+				"
+			/>
+			x
+			<input
+				type="checkbox"
+				:value="modelValue.mirrorY"
+				@input="
+					update({ ...modelValue, mirrorY: ($event.target as HTMLInputElement)?.checked })
+				"
+			/>
+			y
 		</p>
 		<br />
 		<button type="button" @click="$emit('delete')">&Cross;</button>

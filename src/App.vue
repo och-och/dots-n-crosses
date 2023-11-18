@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
+import { ref } from "vue"
 import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
@@ -29,7 +29,13 @@ function deleteLine(index: number) {
 }
 
 function addDot() {
-	crosshair.value.dots.push({ position: { x: 0, y: 0}, size: 3, mirrorX: false, mirrorY: false, style: {} })
+	crosshair.value.dots.push({
+		position: { x: 0, y: 0 },
+		size: 3,
+		mirrorX: false,
+		mirrorY: false,
+		style: {}
+	})
 }
 
 function deleteDot(index: number) {
@@ -78,7 +84,7 @@ function deleteDot(index: number) {
 		</form>
 		<div class="preview">
 			<h1>Preview</h1>
-			<DisplayCrosshair :crosshair="crosshair"/>
+			<DisplayCrosshair :crosshair="crosshair" />
 		</div>
 	</main>
 </template>
