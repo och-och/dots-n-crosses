@@ -1,33 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue"
+import { onMounted } from "vue"
+import { useCrosshairs } from "@/stores/crosshairs"
 import CrosshairEditor from "@/components/CrosshairEditor.vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
-import { validateCrosshairs } from "@/utils/styles/crosshairValidator"
+import { storeToRefs } from "pinia";
 
-const crosshairs = ref<Crosshair[]>([])
+const crosshairsStore = useCrosshairs()
+const { crosshairs } = storeToRefs(crosshairsStore)
+const { load, deleteCrosshair } = crosshairsStore
 
-onMounted(() => {
-	const rawCrosshairs = localStorage.getItem("crosshairs")
-	if (!rawCrosshairs) {
-		return
-	}
 
-	crosshairs.value = validateCrosshairs(JSON.parse(rawCrosshairs))
-})
-
-function addCrosshair(crosshair: Crosshair) {
-	crosshairs.value.push(crosshair)
-	save()
-}
-
-function deleteCrosshair(index: number) {
-	crosshairs.value.splice(index, 1)
-	save()
-}
-
-function save() {
-	localStorage.setItem("crosshairs", JSON.stringify(crosshairs.value))
-}
+onMounted(load)
 </script>
 
 <template>
