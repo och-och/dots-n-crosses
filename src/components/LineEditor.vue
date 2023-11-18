@@ -13,10 +13,15 @@ const { modelValue } = defineProps<{
 
 <template>
 	<div>
-		<NumberInput title="Offset" :max="100" v-model="modelValue.offset"/>
-		<NumberInput title="Length" :max="100" v-model="modelValue.length"/>
-		<NumberInput title="Thickness" :max="100" v-model="modelValue.thickness"/>
-		<NumberInput title="Angle" :max="360" v-model="modelValue.angle"/>
+		<NumberInput title="Offset" :max="100" v-model="modelValue.offset" />
+		<NumberInput title="Length" :max="100" v-model="modelValue.length" />
+		<NumberInput title="Thickness" :max="100" v-model="modelValue.thickness" />
+		<NumberInput title="Angle" :max="360" v-model="modelValue.angle" />
+		<p>
+			Mirror
+			<input type="checkbox" v-model="modelValue.mirrorX"> x
+			<input type="checkbox" v-model="modelValue.mirrorY"> y
+		</p>
 		<br />
 		<button @click="$emit('delete')">&Cross;</button>
 	</div>
