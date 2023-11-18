@@ -4,6 +4,10 @@ import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
 
+defineEmits<{
+	(e: "save", crosshair: Crosshair): void
+}>()
+
 const crosshair = ref<Crosshair>({
 	dots: [],
 	lines: [],
@@ -85,6 +89,7 @@ function deleteDot(index: number) {
 		<div class="preview">
 			<h1>Preview</h1>
 			<DisplayCrosshair :crosshair="crosshair" />
+			<button type="button" @click="$emit('save', crosshair)">💾 Save</button>
 		</div>
 	</main>
 </template>
