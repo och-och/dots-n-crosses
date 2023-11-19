@@ -5,9 +5,9 @@ import LineEditor from "@/components/LineEditor.vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import ColorInput from "@/components/ColorInput.vue"
-import { useRoute, useRouter } from "vue-router";
-import { useCrosshairs } from "@/stores/crosshairs";
-import { storeToRefs } from "pinia";
+import { useRoute, useRouter } from "vue-router"
+import { useCrosshairs } from "@/stores/crosshairs"
+import { storeToRefs } from "pinia"
 
 defineEmits<{
 	(e: "save", crosshair: Crosshair): void
@@ -26,19 +26,21 @@ const crosshairsStore = useCrosshairs()
 const { crosshairs } = storeToRefs(crosshairsStore)
 const { deleteCrosshair, addCrosshair } = crosshairsStore
 
-const crosshair = ref<Crosshair>((()=>{
-	if (editingIndex !== null) {
-		return structuredClone(toRaw(crosshairs.value[editingIndex]))
-	}
-
-	return {
-		dots: [],
-		lines: [],
-		style: {
-			color: "#ff6ab5"
+const crosshair = ref<Crosshair>(
+	(() => {
+		if (editingIndex !== null) {
+			return structuredClone(toRaw(crosshairs.value[editingIndex]))
 		}
-	}
-})())
+
+		return {
+			dots: [],
+			lines: [],
+			style: {
+				color: "#ff6ab5"
+			}
+		}
+	})()
+)
 
 function addLine() {
 	crosshair.value.lines.push({
@@ -86,7 +88,13 @@ function save() {
 			<div class="section">
 				<h2><span>Style</span><span>🎨</span></h2>
 				<ShapeEditor>
-					<ColorInput :model-value="crosshair.style.color" @update:model-value="color => crosshair = { ...crosshair, style: {...crosshair.style, color} }" />
+					<ColorInput
+						:model-value="crosshair.style.color"
+						@update:model-value="
+							color =>
+								(crosshair = { ...crosshair, style: { ...crosshair.style, color } })
+						"
+					/>
 				</ShapeEditor>
 			</div>
 
@@ -99,8 +107,8 @@ function save() {
 						v-model="crosshair.dots[index]"
 						@delete="deleteDot(index)"
 					/>
+					<button type="button" class="add-shape" @click="addDot">+</button>
 				</div>
-				<button type="button" @click="addDot">+</button>
 			</div>
 
 			<div class="section">
@@ -112,8 +120,8 @@ function save() {
 						v-model="crosshair.lines[index]"
 						@delete="deleteLine(index)"
 					/>
+					<button type="button" class="add-shape" @click="addLine">+</button>
 				</div>
-				<button type="button" @click="addLine">+</button>
 			</div>
 		</form>
 		<div class="preview">
@@ -129,21 +137,22 @@ main {
 	display: flex;
 	place-content: center;
 	place-items: start;
-	gap: 2em;
+	gap: 2rem;
 }
 
 .options {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 1em;
+	gap: 1rem;
 }
 
 .section {
 	display: flex;
 	flex-direction: column;
-	gap: 1em;
-	padding: 1em;
+	gap: 1rem;
+	padding: 1rem;
+	color: var(--color-text-section);
 	background-color: var(--color-background-section);
 	border-radius: var(--border-radius-small);
 }
@@ -155,12 +164,28 @@ h2 {
 
 .shape-list {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 200px);
-	gap: 1em;
+	grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+	gap: 1rem;
+}
+
+.add-shape {
+	display: flex;
+	place-content: center;
+	place-items: center;
+	min-height: 250px;
+	margin-bottom: 0.5rem;
+	font-size: 2rem;
+	color: var(--color-primary);
+	background: var(--color-background);
+	border: none;
+	border-radius: var(--border-radius-small);
+}
+.add-shape:first-child {
+	margin-bottom: 0;
 }
 
 .preview {
 	position: sticky;
-	top: 2em;
+	top: 2rem;
 }
 </style>

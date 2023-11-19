@@ -25,7 +25,7 @@ const { deleteCrosshair } = crosshairsStore
 .crosshair-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 300px);
-	gap: 1em;
+	gap: 1rem;
 }
 
 .new-crosshair {

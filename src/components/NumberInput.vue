@@ -30,7 +30,14 @@ function update(event: Event) {
 				{{ title }}
 			</p>
 			<div class="number">
-				<button class="number-button" type="button" tabindex="-1" @click="$emit('update:model-value', modelValue - 1)">-</button>
+				<button
+					class="number-button"
+					type="button"
+					tabindex="-1"
+					@click="$emit('update:model-value', modelValue - 1)"
+				>
+					-
+				</button>
 				<input
 					type="number"
 					:min="min"
@@ -39,7 +46,14 @@ function update(event: Event) {
 					:value="modelValue"
 					@input="update($event)"
 				/>
-				<button class="number-button" type="button" tabindex="-1" @click="$emit('update:model-value', modelValue + 1)">+</button>
+				<button
+					class="number-button"
+					type="button"
+					tabindex="-1"
+					@click="$emit('update:model-value', modelValue + 1)"
+				>
+					+
+				</button>
 			</div>
 		</div>
 		<input
@@ -68,31 +82,31 @@ function update(event: Event) {
 .number {
 	display: flex;
 	place-items: center;
-	border: .3em solid var(--color-primary);
+	border: 0.3rem solid var(--color-primary);
 	border-radius: var(--border-radius-small);
-	--size: 1.5em;
+	--size: 1.5rem;
 }
 .number:focus-within {
-	box-shadow: 0 0 1em var(--color-primary);
+	box-shadow: 0 0 1rem var(--color-primary);
 	z-index: 1;
 }
 
 input[type="number"] {
 	-moz-appearance: textfield;
-    appearance: textfield;
-	width: 3em;
+	appearance: textfield;
+	width: 3rem;
 	height: var(--size);
 	line-height: var(--size);
 	padding: 2px 0;
 
 	text-align: center;
 	background-color: transparent;
-	border: none
+	border: none;
 }
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
 input[type="number"]:focus {
 	outline: none;

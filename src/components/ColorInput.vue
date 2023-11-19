@@ -7,7 +7,7 @@ withDefaults(
 	}>(),
 	{
 		modelValue: "#ffffff",
-		title: "Color",
+		title: "Color"
 	}
 )
 
@@ -22,8 +22,7 @@ function updateFromText(event: Event) {
 }
 
 function toText(value: string): string {
-	if (value.charAt(0) == "#")
-		value = value.substring(1)
+	if (value.charAt(0) == "#") value = value.substring(1)
 
 	return value.toUpperCase()
 }
@@ -37,18 +36,10 @@ function toText(value: string): string {
 			</p>
 			<div class="text">
 				#
-				<input
-					type="text"
-					:value="toText(modelValue)"
-					@input="updateFromText($event)"
-				/>
+				<input type="text" :value="toText(modelValue)" @input="updateFromText($event)" />
 			</div>
 		</div>
-		<input
-			type="color"
-			:value="modelValue"
-			@input="update($event)"
-		/>
+		<input type="color" :value="modelValue" @input="update($event)" />
 	</div>
 </template>
 
@@ -59,31 +50,36 @@ function toText(value: string): string {
 	place-items: center;
 }
 
+.title p {
+	color: var(--color-text-primary);
+	font-weight: bold;
+}
+
 .text {
 	display: flex;
 	place-items: center;
 	padding-left: 5px;
-	border: .3em solid var(--color-primary);
+	border: 0.3rem solid var(--color-primary);
 	border-radius: var(--border-radius-small);
-	--size: 1.5em;
+	--size: 1.5rem;
 }
 
 .text:focus-within {
-	box-shadow: 0 0 1em var(--color-primary);
+	box-shadow: 0 0 1rem var(--color-primary);
 	z-index: 1;
 }
 
 .text input {
 	-moz-appearance: textfield;
-    appearance: textfield;
-	width: 4em;
+	appearance: textfield;
+	width: 4rem;
 	height: var(--size);
 	line-height: var(--size);
 	padding: 2px 0;
 
 	text-align: center;
 	background-color: transparent;
-	border: none
+	border: none;
 }
 
 .text input {

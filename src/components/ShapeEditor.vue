@@ -1,9 +1,12 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
-	hasBottomButton: boolean
-}>(), {
-	hasBottomButton: false
-})
+withDefaults(
+	defineProps<{
+		hasBottomButton: boolean
+	}>(),
+	{
+		hasBottomButton: false
+	}
+)
 </script>
 
 <template>
@@ -17,13 +20,14 @@ withDefaults(defineProps<{
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 1em;
-	padding: 1em;
+	gap: 1rem;
+	padding: 1rem;
+	color: var(--color-text);
 	background-color: var(--color-background);
 	border-radius: var(--border-radius-small);
 }
 .shape-editor.has-bottom-button {
-	padding-bottom: 2em;
-	margin-bottom: .5em;
+	padding-bottom: 2rem;
+	margin-bottom: 0.5rem;
 }
 </style>
