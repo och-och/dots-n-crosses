@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import NumberInput from "@/components/NumberInput.vue"
+import ShapeEditor from "@/components/ShapeEditor.vue"
+import BottomButton from "@/components/BottomButton.vue"
 
 const emit = defineEmits<{
 	(e: "update:model-value", dot: Dot): void
@@ -16,7 +18,7 @@ function update(dot: Dot) {
 </script>
 
 <template>
-	<div>
+	<ShapeEditor has-bottom-button>
 		<NumberInput
 			title="X"
 			:min="-150"
@@ -60,7 +62,6 @@ function update(dot: Dot) {
 			/>
 			y
 		</p>
-		<br />
-		<button type="button" @click="$emit('delete')">&Cross;</button>
-	</div>
+		<BottomButton @click="$emit('delete')">&Cross;</BottomButton>
+	</ShapeEditor>
 </template>

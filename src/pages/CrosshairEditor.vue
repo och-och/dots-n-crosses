@@ -3,6 +3,8 @@ import { ref, toRaw } from "vue"
 import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
+import ShapeEditor from "@/components/ShapeEditor.vue"
+import ColorInput from "@/components/ColorInput.vue"
 import { useRoute, useRouter } from "vue-router";
 import { useCrosshairs } from "@/stores/crosshairs";
 import { storeToRefs } from "pinia";
@@ -82,37 +84,35 @@ function save() {
 		<form class="options" @submit.prevent="">
 			<h1>Options</h1>
 			<div class="section">
-				<h2>Style</h2>
-				<div>
-					<label>
-						<p>
-							Color
-							<input type="text" v-model="crosshair.style.color" />
-						</p>
-					</label>
-					<input type="color" v-model="crosshair.style.color" />
-				</div>
+				<h2><span>Style</span><span>🎨</span></h2>
+				<ShapeEditor>
+					<ColorInput :model-value="crosshair.style.color" @update:model-value="color => crosshair = { ...crosshair, style: {...crosshair.style, color} }" />
+				</ShapeEditor>
 			</div>
 
 			<div class="section">
-				<h2>Dots</h2>
-				<DotEditor
-					v-for="(_, index) in crosshair.dots"
-					:key="index"
-					v-model="crosshair.dots[index]"
-					@delete="deleteDot(index)"
-				/>
+				<h2><span>Dots</span><span>&middot;&middot;&middot;</span></h2>
+				<div class="shape-list">
+					<DotEditor
+						v-for="(_, index) in crosshair.dots"
+						:key="index"
+						v-model="crosshair.dots[index]"
+						@delete="deleteDot(index)"
+					/>
+				</div>
 				<button type="button" @click="addDot">+</button>
 			</div>
 
 			<div class="section">
-				<h2>Lines</h2>
-				<LineEditor
-					v-for="(_, index) in crosshair.lines"
-					:key="index"
-					v-model="crosshair.lines[index]"
-					@delete="deleteLine(index)"
-				/>
+				<h2><span>Lines</span><span>///</span></h2>
+				<div class="shape-list">
+					<LineEditor
+						v-for="(_, index) in crosshair.lines"
+						:key="index"
+						v-model="crosshair.lines[index]"
+						@delete="deleteLine(index)"
+					/>
+				</div>
 				<button type="button" @click="addLine">+</button>
 			</div>
 		</form>
@@ -130,6 +130,33 @@ main {
 	place-content: center;
 	place-items: start;
 	gap: 2em;
+}
+
+.options {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	padding: 1em;
+	background-color: var(--color-background-section);
+	border-radius: var(--border-radius-small);
+}
+
+h2 {
+	display: flex;
+	place-content: space-between;
+}
+
+.shape-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 200px);
+	gap: 1em;
 }
 
 .preview {
