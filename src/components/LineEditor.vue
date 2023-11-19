@@ -47,7 +47,7 @@ function update(line: Line) {
 			Mirror
 			<input
 				type="checkbox"
-				:value="modelValue.mirrorX"
+				:checked="modelValue.mirrorX"
 				@input="
 					update({ ...modelValue, mirrorX: ($event.target as HTMLInputElement)?.checked })
 				"
@@ -55,7 +55,7 @@ function update(line: Line) {
 			x
 			<input
 				type="checkbox"
-				:value="modelValue.mirrorY"
+				:checked="modelValue.mirrorY"
 				@input="
 					update({ ...modelValue, mirrorY: ($event.target as HTMLInputElement)?.checked })
 				"
