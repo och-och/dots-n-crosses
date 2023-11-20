@@ -9,6 +9,8 @@
     }
   ],
   "compilerOptions": {
-    "types": ["@overwolf/types"]
+    "types": [
+      "@overwolf/types"
+    ]
   }
 }

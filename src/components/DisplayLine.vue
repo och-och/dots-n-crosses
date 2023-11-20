@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRefs } from "vue"
-import { stylize } from "@/utils/styles/stylize"
+import { stylize } from "@/utils/stylize"
 
 const props = defineProps<{
 	line: Line
@@ -49,3 +49,4 @@ line {
 	outline: var(--outline-thickness) solid var(--outline-color);
 }
 </style>
+@/utils/stylize

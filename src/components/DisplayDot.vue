@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { stylize } from "@/utils/styles/stylize"
+import { stylize } from "@/utils/stylize"
 
 defineProps<{
 	dot: Dot
@@ -27,3 +27,4 @@ circle {
 	fill: var(--color);
 }
 </style>
+@/utils/stylize

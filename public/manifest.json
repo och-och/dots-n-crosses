@@ -46,6 +46,7 @@
 				"transparent": false,
 				"resizable": true,
 				"use_os_windowing": true,
+				"show_maximize": true,
 				"size": {
 					"width": 900,
 					"height": 600

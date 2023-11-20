@@ -28,8 +28,9 @@ const { deleteCrosshair, addCrosshair } = crosshairsStore
 
 const crosshair = ref<Crosshair>(
 	(() => {
-		if (editingIndex !== null) {
-			return structuredClone(toRaw(crosshairs.value[editingIndex]))
+		const unRefedDrosshairs = toRaw(crosshairs.value)
+		if (editingIndex !== null && unRefedDrosshairs instanceof Array) {
+			return structuredClone(toRaw(unRefedDrosshairs[editingIndex]))
 		}
 
 		return {

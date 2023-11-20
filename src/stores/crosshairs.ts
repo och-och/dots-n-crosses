@@ -1,13 +1,15 @@
-import { validateCrosshairs } from "@/utils/styles/crosshairValidator"
+import { validateCrosshairs } from "@/utils/crosshairValidator"
+import { readFile, writeFile } from "@/utils/fs"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
 export const useCrosshairs = defineStore("crosshairs", () => {
-	const crosshairs = ref<Crosshair[]>([])
+	const crosshairs = ref<"loading" | Crosshair[]>("loading")
 
-	function load() {
-		const rawCrosshairs = localStorage.getItem("crosshairs")
+	async function load() {
+		const rawCrosshairs = await readFile("crosshairs.json").catch(() => null)
 		if (!rawCrosshairs) {
+			crosshairs.value = []
 			return
 		}
 
@@ -15,15 +17,21 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 	}
 
 	function save() {
-		localStorage.setItem("crosshairs", JSON.stringify(crosshairs.value))
+		writeFile("crosshairs.json", JSON.stringify(crosshairs.value))
 	}
 
 	function addCrosshair(crosshair: Crosshair) {
+		if (!(crosshairs.value instanceof Array)) {
+			return
+		}
 		crosshairs.value.push(crosshair)
 		save()
 	}
 
 	function deleteCrosshair(index: number) {
+		if (!(crosshairs.value instanceof Array)) {
+			return
+		}
 		if (index < 0 || index >= crosshairs.value.length) {
 			return
 		}

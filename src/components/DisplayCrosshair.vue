@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DisplayDot from "@/components/DisplayDot.vue"
 import DisplayLine from "@/components/DisplayLine.vue"
-import { stylize } from "@/utils/styles/stylize"
+import { stylize } from "@/utils/stylize"
 
 defineProps<{
 	crosshair: Crosshair
@@ -28,3 +28,4 @@ defineProps<{
 	height: 300px;
 }
 </style>
+@/utils/stylize
