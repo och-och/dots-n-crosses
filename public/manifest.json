@@ -8,8 +8,13 @@
 		"author": "Och",
 		"icon": "logo.png",
 		"icon_gray": "logo-grayscale.png",
+		"launcher_icon": "icon.ico",
+		"window_icon": "logo.png",
 		"description": "Demo App"
 	},
+	"permissions": [
+		"Tray"
+	],
 	"data": {
 		"game_targeting": {
 			"type": "dedicated",
@@ -42,8 +47,8 @@
 				"resizable": true,
 				"use_os_windowing": true,
 				"size": {
-					"width": 700,
-					"height": 400
+					"width": 900,
+					"height": 600
 				},
 				"min_size": {
 					"width": 400,
