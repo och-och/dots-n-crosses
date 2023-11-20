@@ -1,3 +1,5 @@
+/// <reference types="@overwolf/types" />
+
 export {}
 
 declare global {
