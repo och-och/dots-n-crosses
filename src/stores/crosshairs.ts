@@ -1,43 +1,58 @@
-import { validateCrosshairs } from "@/utils/crosshairValidator"
-import { readFile, writeFile } from "@/utils/fs"
+import { validateCrosshair } from "@/utils/crosshairValidator"
+import { deleteFile, exists, readDir, readFile, writeFile } from "@/utils/fs"
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 export const useCrosshairs = defineStore("crosshairs", () => {
-	const crosshairs = ref<"loading" | Crosshair[]>("loading")
+	const crosshairsIndexed = ref<Record<string, Crosshair>>({})
+	const crosshairs = computed(() => Object.values(crosshairsIndexed.value))
 
-	async function load() {
-		const rawCrosshairs = await readFile("crosshairs.json").catch(() => null)
-		if (!rawCrosshairs) {
-			crosshairs.value = []
-			return
+	async function loadCrosshairs() {
+		console.log("Loading crosshairs")
+		const { files } = await readDir("crosshairs").catch(() => ({ files: [] as string[] }))
+		console.groupCollapsed("crosshairs")
+		for (const fileName of files) {
+			const rawCrosshair = await readFile(fileName).catch(() => "")
+			try {
+				const crosshair = validateCrosshair(JSON.parse(rawCrosshair))
+				crosshairsIndexed.value[crosshair.id] = crosshair
+				console.log(crosshair)
+			} catch {
+				console.error(fileName)
+			}
 		}
-
-		crosshairs.value = validateCrosshairs(JSON.parse(rawCrosshairs))
+		console.groupEnd()
 	}
 
-	function save() {
-		writeFile("crosshairs.json", JSON.stringify(crosshairs.value))
+	function saveCrosshair(crosshair: Crosshair) {
+		console.log("Saving crosshair", crosshair)
+		writeFile(`crosshairs/${crosshair.id}.json`, JSON.stringify(crosshair))
 	}
 
 	function addCrosshair(crosshair: Crosshair) {
-		if (!(crosshairs.value instanceof Array)) {
-			return
-		}
-		crosshairs.value.push(crosshair)
-		save()
+		crosshairsIndexed.value[crosshair.id] = crosshair
+		saveCrosshair(crosshair)
 	}
 
-	function deleteCrosshair(index: number) {
-		if (!(crosshairs.value instanceof Array)) {
-			return
-		}
-		if (index < 0 || index >= crosshairs.value.length) {
-			return
-		}
-		crosshairs.value.splice(index, 1)
-		save()
+	function updateCrosshair(crosshair: Crosshair) {
+		crosshairsIndexed.value[crosshair.id] = crosshair
+		saveCrosshair(crosshair)
 	}
 
-	return { crosshairs, load, save, addCrosshair, deleteCrosshair }
+	function deleteCrosshair(crosshair: Crosshair) {
+		if (crosshair.id in crosshairsIndexed.value) {
+			delete crosshairsIndexed.value[crosshair.id]
+		}
+		deleteFile(`crosshairs/${crosshair.id}.json`)
+	}
+
+	return {
+		crosshairsIndexed,
+		crosshairs,
+		loadCrosshairs,
+		saveCrosshair,
+		updateCrosshair,
+		addCrosshair,
+		deleteCrosshair
+	}
 })

@@ -3,9 +3,9 @@ import { onMounted } from "vue"
 import { useCrosshairs } from "@/stores/crosshairs"
 
 const crosshairsStore = useCrosshairs()
-const { load } = crosshairsStore
+const { loadCrosshairs } = crosshairsStore
 
-onMounted(load)
+onMounted(loadCrosshairs)
 </script>
 
 <template>

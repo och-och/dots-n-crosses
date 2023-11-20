@@ -3,7 +3,12 @@
 export {}
 
 declare global {
+	interface Options {
+		selectedCrosshair: string
+	}
+
 	interface Crosshair {
+		id: string
 		dots: Dot[]
 		lines: Line[]
 		style: CustomProperties

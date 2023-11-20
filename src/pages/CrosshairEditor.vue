@@ -8,40 +8,29 @@ import ColorInput from "@/components/ColorInput.vue"
 import { useRoute, useRouter } from "vue-router"
 import { useCrosshairs } from "@/stores/crosshairs"
 import { storeToRefs } from "pinia"
-
-defineEmits<{
-	(e: "save", crosshair: Crosshair): void
-}>()
+import { requireString } from "@/utils/validator"
 
 const router = useRouter()
 const route = useRoute()
-const editingIndex = (() => {
-	if (route.name != "edit") return null
-	const number = Number.parseInt(String(route.params.index))
-	if (isNaN(number)) return null
-	return number
-})()
+const editingId = requireString(route.params.id)
 
 const crosshairsStore = useCrosshairs()
-const { crosshairs } = storeToRefs(crosshairsStore)
-const { deleteCrosshair, addCrosshair } = crosshairsStore
+const { crosshairsIndexed } = storeToRefs(crosshairsStore)
+const { updateCrosshair, addCrosshair } = crosshairsStore
 
 const crosshair = ref<Crosshair>(
-	(() => {
-		const unRefedDrosshairs = toRaw(crosshairs.value)
-		if (editingIndex !== null && unRefedDrosshairs instanceof Array) {
-			return structuredClone(toRaw(unRefedDrosshairs[editingIndex]))
-		}
-
-		return {
-			dots: [],
-			lines: [],
-			style: {
-				color: "#ff6ab5"
-			}
-		}
-	})()
+	editingId
+		? crosshairsIndexed.value[editingId]
+		: {
+				id: crypto.randomUUID(),
+				dots: [],
+				lines: [],
+				style: { color: "#ff6ab5" }
+		  }
 )
+
+console.log(editingId)
+console.log(crosshair.value)
 
 function addLine() {
 	crosshair.value.lines.push({
@@ -74,10 +63,12 @@ function deleteDot(index: number) {
 }
 
 function save() {
-	if (editingIndex !== null) {
-		deleteCrosshair(editingIndex)
+	if (editingId !== null) {
+		updateCrosshair(crosshair.value)
 	}
-	addCrosshair(crosshair.value)
+	else {
+		addCrosshair(crosshair.value)
+	}
 	router.back()
 }
 </script>
@@ -129,6 +120,7 @@ function save() {
 			<h1>Preview</h1>
 			<DisplayCrosshair :crosshair="crosshair" />
 			<button type="button" @click="save">💾 Save</button>
+			<button type="button" @click="$router.back()">Cancel</button>
 		</div>
 	</main>
 </template>

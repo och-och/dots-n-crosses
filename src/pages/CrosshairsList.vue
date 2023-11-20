@@ -1,28 +1,29 @@
 <script setup lang="ts">
 import { useCrosshairs } from "@/stores/crosshairs"
+import { useOptions } from "@/stores/options"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
 import { storeToRefs } from "pinia"
 
 const crosshairsStore = useCrosshairs()
 const { crosshairs } = storeToRefs(crosshairsStore)
 const { deleteCrosshair } = crosshairsStore
+
+const optionsStore = useOptions()
+const { options } = storeToRefs(optionsStore)
+const { useCrosshair } = optionsStore
 </script>
 
 <template>
 	<main>
 		<div class="crosshair-list">
 			<button type="button" class="new-crosshair" @click="$router.push('/new')">➕</button>
-			<div v-if="crosshairs == 'loading'" class="loading">
-				<div class="spinner">+</div>
-				<p>Loading your crosshairs...</p>
+			<div class="crosshair" v-for="crosshair in crosshairs" :key="crosshair.id">
+				<DisplayCrosshair :crosshair="crosshair" />
+				<span v-if="crosshair.id == options.selectedCrosshair">✅</span>
+				<button v-else type="button" @click="useCrosshair(crosshair)">☑️ Use</button>
+				<button type="button" @click="$router.push(`edit/${crosshair.id}`)">✒️ Edit</button>
+				<button type="button" @click="deleteCrosshair(crosshair)">🗑️ Delete</button>
 			</div>
-			<template v-else-if="(crosshairs instanceof Array)">
-				<div class="crosshair" v-for="(crosshair, index) in crosshairs" :key="index">
-					<DisplayCrosshair :crosshair="crosshair" />
-					<button type="button" @click="$router.push(`edit/${index}`)">✒️ Edit</button>
-					<button type="button" @click="deleteCrosshair(index)">🗑️ Delete</button>
-				</div>
-			</template>
 		</div>
 	</main>
 </template>
