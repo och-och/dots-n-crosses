@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { onMounted } from "vue"
+import { useStoreLoader } from "@/composables/useStoreLoader"
 import { useCrosshairs } from "@/stores/crosshairs"
+import { useOptions } from "@/stores/options"
+import { storeToRefs } from "pinia"
+import { computed } from "vue"
+import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
+
+useStoreLoader()
+
+const optionsStore = useOptions()
+const { options } = storeToRefs(optionsStore)
 
 const crosshairsStore = useCrosshairs()
-const { loadCrosshairs } = crosshairsStore
+const { crosshairsIndexed } = storeToRefs(crosshairsStore)
 
-onMounted(loadCrosshairs)
+const crosshair = computed(() => crosshairsIndexed.value[options.value.selectedCrosshair])
 </script>
 
 <template>
 	<main>
-		<h1>Hello!</h1>
+		<DisplayCrosshair :crosshair="crosshair" />
 	</main>
 </template>

@@ -17,10 +17,10 @@ export const writeFile = (path: string, content: string): Promise<void> =>
 			overwolf.extensions.io.writeTextFile(space, path, content, ({ success, error }) =>
 				success ? res() : rej(error)
 			)
-		)
-		.catch(
+		).catch(
 			e => (
-				console.error(`Tried writing to ${path}. Encountered error (${e})`), Promise.reject(e)
+				console.error(`Tried writing to ${path}. Encountered error (${e})`),
+				Promise.reject(e)
 			)
 		)
 	)

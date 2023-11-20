@@ -2,7 +2,7 @@
 import { ref, toRaw } from "vue"
 import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
-import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
+import CrosshairPreview from "@/components/CrosshairPreview.vue"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import ColorInput from "@/components/ColorInput.vue"
 import { useRoute, useRouter } from "vue-router"
@@ -65,8 +65,7 @@ function deleteDot(index: number) {
 function save() {
 	if (editingId !== null) {
 		updateCrosshair(crosshair.value)
-	}
-	else {
+	} else {
 		addCrosshair(crosshair.value)
 	}
 	router.back()
@@ -118,7 +117,7 @@ function save() {
 		</form>
 		<div class="preview">
 			<h1>Preview</h1>
-			<DisplayCrosshair :crosshair="crosshair" />
+			<CrosshairPreview :crosshair="crosshair" />
 			<button type="button" @click="save">💾 Save</button>
 			<button type="button" @click="$router.back()">Cancel</button>
 		</div>

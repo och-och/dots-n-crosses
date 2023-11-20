@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCrosshairs } from "@/stores/crosshairs"
 import { useOptions } from "@/stores/options"
-import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
+import CrosshairPreview from "@/components/CrosshairPreview.vue"
 import { storeToRefs } from "pinia"
 
 const crosshairsStore = useCrosshairs()
@@ -18,7 +18,7 @@ const { useCrosshair } = optionsStore
 		<div class="crosshair-list">
 			<button type="button" class="new-crosshair" @click="$router.push('/new')">➕</button>
 			<div class="crosshair" v-for="crosshair in crosshairs" :key="crosshair.id">
-				<DisplayCrosshair :crosshair="crosshair" />
+				<CrosshairPreview :crosshair="crosshair" />
 				<span v-if="crosshair.id == options.selectedCrosshair">✅</span>
 				<button v-else type="button" @click="useCrosshair(crosshair)">☑️ Use</button>
 				<button type="button" @click="$router.push(`edit/${crosshair.id}`)">✒️ Edit</button>

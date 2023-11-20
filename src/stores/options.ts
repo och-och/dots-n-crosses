@@ -1,4 +1,4 @@
-import { deleteFile, readFile, writeFile } from "@/utils/fs"
+import { readFile, writeFile } from "@/utils/fs"
 import { validateOptions } from "@/utils/optionsValidator"
 import { defineStore } from "pinia"
 import { ref } from "vue"
@@ -8,7 +8,7 @@ export const useOptions = defineStore("options", () => {
 		selectedCrosshair: ""
 	})
 
-	async function load() {
+	async function loadOptions() {
 		const rawOptions = await readFile("options.json").catch(() => null)
 		if (!rawOptions) {
 			return
@@ -28,5 +28,5 @@ export const useOptions = defineStore("options", () => {
 		save()
 	}
 
-	return { options, load, save, useCrosshair }
+	return { options, loadOptions, save, useCrosshair }
 })
