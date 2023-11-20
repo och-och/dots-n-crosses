@@ -2,6 +2,7 @@
 import NumberInput from "@/components/NumberInput.vue"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import BottomButton from "@/components/BottomButton.vue"
+import MirrorInput from "@/components/MirrorInput.vue"
 
 const emit = defineEmits<{
 	(e: "update:model-value", dot: Dot): void
@@ -43,25 +44,12 @@ function update(dot: Dot) {
 			:model-value="modelValue.size"
 			@update:model-value="size => update({ ...modelValue, size })"
 		/>
-		<p>
-			Mirror
-			<input
-				type="checkbox"
-				:checked="modelValue.mirrorX"
-				@input="
-					update({ ...modelValue, mirrorX: ($event.target as HTMLInputElement)?.checked })
-				"
-			/>
-			x
-			<input
-				type="checkbox"
-				:checked="modelValue.mirrorY"
-				@input="
-					update({ ...modelValue, mirrorY: ($event.target as HTMLInputElement)?.checked })
-				"
-			/>
-			y
-		</p>
-		<BottomButton @click="$emit('delete')">&Cross;</BottomButton>
+		<MirrorInput
+			:x="modelValue.mirrorX"
+			:y="modelValue.mirrorY"
+			@update:x="x => update({ ...modelValue, mirrorX: x })"
+			@update:y="y => update({ ...modelValue, mirrorY: y })"
+		/>
+		<BottomButton @click="$emit('delete')">✖</BottomButton>
 	</ShapeEditor>
 </template>

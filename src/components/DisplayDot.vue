@@ -25,6 +25,8 @@ defineProps<{
 <style scoped>
 circle {
 	fill: var(--color);
+	stroke: var(--outline-color);
+	stroke-width: var(--outline-thickness);
+	stroke-linejoin: round;
 }
 </style>
-@/utils/stylize

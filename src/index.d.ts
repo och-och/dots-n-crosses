@@ -18,6 +18,7 @@ declare global {
 		offset: number
 		length: number
 		thickness: number
+		roundness: number
 		angle: number
 		mirrorX: bool
 		mirrorY: bool

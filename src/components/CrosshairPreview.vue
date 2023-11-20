@@ -14,8 +14,9 @@ defineProps<{
 
 <style scoped>
 .display-crosshair {
-	background-color: antiquewhite;
+	background-color: rgb(245, 241, 236);
 	width: 300px;
 	height: 300px;
+	border-radius: var(--border-radius-small);
 }
 </style>

@@ -16,9 +16,8 @@
 
 	display: flex;
 	place-content: center;
-	place-items: start;
+	place-items: center;
 
-	font-size: 1.2rem;
 	font-weight: bold;
 	color: var(--color-primary);
 	background-color: var(--color-background);

@@ -13,40 +13,41 @@ function mirroredAngle(line: Line) {
 	if (line.mirrorX) {
 		angle = -angle
 	}
-	angle -= 90
 	if (line.mirrorY) {
-		angle = -angle
+		angle = 180 - angle
 	}
 	return angle
 }
 </script>
 
 <template>
-	<line
-		:x1="line.offset"
-		:x2="line.offset + line.length"
-		y1="0"
-		y2="0"
-		:stroke-width="line.thickness"
-		:transform="`rotate(${line.angle - 90})`"
+	<rect
+		:x="0 - line.thickness / 2"
+		:y="0 - line.offset - line.length"
+		:width="line.thickness"
+		:height="line.length"
+		:rx="line.roundness"
+		:transform="`rotate(${line.angle})`"
 		:style="stylize(line.style)"
 	/>
-	<line
+	<rect
 		v-if="line.mirrorX || line.mirrorY"
-		:x1="line.offset"
-		:x2="line.offset + line.length"
-		y1="0"
-		y2="0"
-		:stroke-width="line.thickness"
+		:x="0 - line.thickness / 2"
+		:y="0 - line.offset - line.length"
+		:width="line.thickness"
+		:height="line.length"
+		:rx="line.roundness"
 		:transform="`rotate(${mirroredAngle(line)})`"
 		:style="stylize(line.style)"
 	/>
 </template>
 
 <style scoped>
-line {
-	stroke: var(--color);
-	outline: var(--outline-thickness) solid var(--outline-color);
+rect {
+	fill: var(--color);
+	stroke: var(--outline-color);
+	stroke-width: var(--outline-thickness);
+	stroke-linejoin: round;
 }
 </style>
 @/utils/stylize

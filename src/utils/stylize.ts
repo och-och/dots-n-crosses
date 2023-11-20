@@ -3,8 +3,8 @@ export function stylize(style: CustomProperties) {
 	if (style.color) {
 		styles.push(`--color: ${style.color}`)
 	}
-	if (style.outlineThickness) {
-		styles.push(`--outline-thickness: ${style.outlineThickness}`)
+	if (style.outlineThickness !== undefined) {
+		styles.push(`--outline-thickness: ${style.outlineThickness}px`)
 	}
 	if (style.outlineColor) {
 		styles.push(`--outline-color: ${style.outlineColor}`)

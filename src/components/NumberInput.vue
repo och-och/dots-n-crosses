@@ -24,7 +24,7 @@ function update(event: Event) {
 </script>
 
 <template>
-	<div>
+	<div class="number-input">
 		<div class="title">
 			<p>
 				{{ title }}
@@ -68,6 +68,12 @@ function update(event: Event) {
 </template>
 
 <style scoped>
+.number-input {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
 .title {
 	display: flex;
 	place-content: space-between;
@@ -100,6 +106,7 @@ input[type="number"] {
 	padding: 2px 0;
 
 	text-align: center;
+	font-size: 1rem;
 	background-color: transparent;
 	border: none;
 }
@@ -118,7 +125,11 @@ input[type="number"]:focus {
 	place-items: center;
 	width: var(--size);
 	height: var(--size);
+
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
 	line-height: var(--size);
+	color: var(--color-primary);
 
 	background-color: transparent;
 	border: none;

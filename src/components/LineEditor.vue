@@ -2,6 +2,7 @@
 import NumberInput from "@/components/NumberInput.vue"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import BottomButton from "@/components/BottomButton.vue"
+import MirrorInput from "@/components/MirrorInput.vue"
 
 const emit = defineEmits<{
 	(e: "update:model-value", line: Line): void
@@ -38,31 +39,23 @@ function update(line: Line) {
 			@update:model-value="thickness => update({ ...modelValue, thickness })"
 		/>
 		<NumberInput
+			title="Roundness"
+			:max="100"
+			:model-value="modelValue.roundness"
+			@update:model-value="roundness => update({ ...modelValue, roundness })"
+		/>
+		<NumberInput
 			title="Angle"
 			:max="360"
 			:model-value="modelValue.angle"
 			@update:model-value="angle => update({ ...modelValue, angle })"
 		/>
-		<p>
-			Mirror
-			<input
-				type="checkbox"
-				:checked="modelValue.mirrorX"
-				@input="
-					update({ ...modelValue, mirrorX: ($event.target as HTMLInputElement)?.checked })
-				"
-			/>
-			x
-			<input
-				type="checkbox"
-				:checked="modelValue.mirrorY"
-				@input="
-					update({ ...modelValue, mirrorY: ($event.target as HTMLInputElement)?.checked })
-				"
-			/>
-			y
-		</p>
-		<br />
-		<BottomButton @click="$emit('delete')">&Cross;</BottomButton>
+		<MirrorInput
+			:x="modelValue.mirrorX"
+			:y="modelValue.mirrorY"
+			@update:x="x => update({ ...modelValue, mirrorX: x })"
+			@update:y="y => update({ ...modelValue, mirrorY: y })"
+		/>
+		<BottomButton @click="$emit('delete')">✖</BottomButton>
 	</ShapeEditor>
 </template>

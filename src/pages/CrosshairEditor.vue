@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, toRaw } from "vue"
+import { ref } from "vue"
 import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
 import CrosshairPreview from "@/components/CrosshairPreview.vue"
-import ShapeEditor from "@/components/ShapeEditor.vue"
-import ColorInput from "@/components/ColorInput.vue"
+import StyleEditor from "@/components/StyleEditor.vue"
 import { useRoute, useRouter } from "vue-router"
 import { useCrosshairs } from "@/stores/crosshairs"
 import { storeToRefs } from "pinia"
@@ -38,6 +37,7 @@ function addLine() {
 		length: 5,
 		offset: 5,
 		thickness: 1,
+		roundness: 0,
 		mirrorX: false,
 		mirrorY: false,
 		style: {}
@@ -77,20 +77,17 @@ function save() {
 		<form class="options" @submit.prevent="">
 			<h1>Options</h1>
 			<div class="section">
-				<h2><span>Style</span><span>🎨</span></h2>
-				<ShapeEditor>
-					<ColorInput
-						:model-value="crosshair.style.color"
-						@update:model-value="
-							color =>
-								(crosshair = { ...crosshair, style: { ...crosshair.style, color } })
-						"
+				<h2>Style</h2>
+				<div class="shape-list">
+					<StyleEditor
+						:model-value="crosshair.style"
+						@update:model-value="style => (crosshair = { ...crosshair, style })"
 					/>
-				</ShapeEditor>
+				</div>
 			</div>
 
 			<div class="section">
-				<h2><span>Dots</span><span>&middot;&middot;&middot;</span></h2>
+				<h2>Dots</h2>
 				<div class="shape-list">
 					<DotEditor
 						v-for="(_, index) in crosshair.dots"
@@ -103,7 +100,7 @@ function save() {
 			</div>
 
 			<div class="section">
-				<h2><span>Lines</span><span>///</span></h2>
+				<h2>Lines</h2>
 				<div class="shape-list">
 					<LineEditor
 						v-for="(_, index) in crosshair.lines"
@@ -118,8 +115,12 @@ function save() {
 		<div class="preview">
 			<h1>Preview</h1>
 			<CrosshairPreview :crosshair="crosshair" />
-			<button type="button" @click="save">💾 Save</button>
-			<button type="button" @click="$router.back()">Cancel</button>
+			<div class="preview-buttons">
+				<button type="button" class="preview-button with-icon" @click="save">
+					💾 Save
+				</button>
+				<button type="button" class="preview-button" @click="$router.back()">Cancel</button>
+			</div>
 		</div>
 	</main>
 </template>
@@ -130,6 +131,10 @@ main {
 	place-content: center;
 	place-items: start;
 	gap: 2rem;
+}
+
+h1 {
+	color: var(--color-primary);
 }
 
 .options {
@@ -147,11 +152,6 @@ main {
 	color: var(--color-text-section);
 	background-color: var(--color-background-section);
 	border-radius: var(--border-radius-small);
-}
-
-h2 {
-	display: flex;
-	place-content: space-between;
 }
 
 .shape-list {
@@ -179,5 +179,26 @@ h2 {
 .preview {
 	position: sticky;
 	top: 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.preview-buttons {
+	display: flex;
+	gap: 1rem;
+}
+
+.preview-button {
+	padding: 0.3rem 1rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: var(--color-text-section);
+	background-color: var(--color-primary);
+	border: none;
+	border-radius: var(--border-radius-small);
+}
+.preview-button.with-icon {
+	padding-left: 0.6rem;
 }
 </style>

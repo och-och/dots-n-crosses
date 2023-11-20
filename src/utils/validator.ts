@@ -1,6 +1,7 @@
 export const validateNumber = validateType<number>("number")
 export const validateString = validateType<string>("string")
 export const validateBoolean = validateType<boolean>("boolean")
+
 export const validateArray = <T>(array: T[], elementValidator: (element: T) => T) => {
 	assert(
 		typeof array == "object" && array instanceof Array,
@@ -10,9 +11,10 @@ export const validateArray = <T>(array: T[], elementValidator: (element: T) => T
 }
 
 export function validateType<T>(type: "string" | "number" | "boolean") {
-	return (value: T) => {
-		assert(typeof value == type, () => new Error(`Validation error: ${value} is not ${type}!`))
-		return value as T
+	return (value: T, defaultValue: T) => {
+		if (typeof value == type)
+			return value as T
+		return defaultValue
 	}
 }
 
