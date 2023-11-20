@@ -1,6 +1,18 @@
 import { OWGames, OWGameListener, OWWindow } from "@overwolf/overwolf-api-ts"
 
 const VALORANT_ID = 21640
+const launchOriginsToOpenMainWindow = [
+	"dock",
+	"hotkey",
+	"storeapi",
+	"odk",
+	"commandline",
+	"tray",
+	"startup",
+	"after-install",
+	"urlscheme"
+]
+
 let mainWindow: OWWindow
 let ingameWindow: OWWindow
 let gameListener: OWGameListener
@@ -16,12 +28,16 @@ async function launch() {
 	{
 		const gameInfo = await OWGames.getRunningGameInfo()
 		if (gameInfo) onGameStarted(gameInfo)
-		else mainWindow.restore()
 	}
 
 	createTrayIcon()
 
-	overwolf.extensions.onAppLaunchTriggered.addListener(() => mainWindow.restore())
+	overwolf.extensions.onAppLaunchTriggered.addListener(event => {
+		console.log(event)
+		if (launchOriginsToOpenMainWindow.includes(event.origin)) {
+			mainWindow.restore()
+		}
+	})
 }
 
 function createTrayIcon() {
