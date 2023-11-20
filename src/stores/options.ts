@@ -20,12 +20,12 @@ export const useOptions = defineStore("options", () => {
 	}
 
 	async function save() {
-		writeFile("options.json", JSON.stringify(options.value))
+		await writeFile("options.json", JSON.stringify(options.value))
 	}
 
-	function useCrosshair(crosshair: Crosshair) {
+	async function useCrosshair(crosshair: Crosshair) {
 		options.value.selectedCrosshair = crosshair.id
-		save()
+		await save()
 	}
 
 	return { options, loadOptions, save, useCrosshair }

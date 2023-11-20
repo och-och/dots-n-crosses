@@ -11,6 +11,11 @@ const { deleteCrosshair } = crosshairsStore
 const optionsStore = useOptions()
 const { options } = storeToRefs(optionsStore)
 const { useCrosshair } = optionsStore
+
+async function selectCrosshair(crosshair: Crosshair) {
+	await useCrosshair(crosshair)
+	overwolf.windows.getMainWindow().postMessage("refresh-ingame-crosshair")
+}
 </script>
 
 <template>
@@ -20,7 +25,7 @@ const { useCrosshair } = optionsStore
 			<div class="crosshair" v-for="crosshair in crosshairs" :key="crosshair.id">
 				<CrosshairPreview :crosshair="crosshair" />
 				<span v-if="crosshair.id == options.selectedCrosshair">✅</span>
-				<button v-else type="button" @click="useCrosshair(crosshair)">☑️ Use</button>
+				<button v-else type="button" @click="selectCrosshair(crosshair)">☑️ Use</button>
 				<button type="button" @click="$router.push(`edit/${crosshair.id}`)">✒️ Edit</button>
 				<button type="button" @click="deleteCrosshair(crosshair)">🗑️ Delete</button>
 			</div>
