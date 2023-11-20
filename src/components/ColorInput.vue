@@ -62,6 +62,7 @@ function toText(value: string): string {
 	border: 0.3rem solid var(--color-primary);
 	border-radius: var(--border-radius-small);
 	--size: 1.5rem;
+	line-height: var(--size);
 }
 
 .text:focus-within {
