@@ -21,13 +21,14 @@ async function selectCrosshair(crosshair: Crosshair) {
 <template>
 	<main>
 		<div class="crosshair-list">
-			<button type="button" class="new-crosshair" @click="$router.push('/new')">➕</button>
-			<div class="crosshair" v-for="crosshair in crosshairs" :key="crosshair.id">
+			<button type="button" class="new-crosshair" @click="$router.push('/new')">+</button>
+			<div class="crosshair" :class="{ selected: crosshair.id == options.selectedCrosshair }" v-for="crosshair in crosshairs" :key="crosshair.id">
 				<CrosshairPreview :crosshair="crosshair" />
-				<span v-if="crosshair.id == options.selectedCrosshair">✅</span>
-				<button v-else type="button" @click="selectCrosshair(crosshair)">☑️ Use</button>
-				<button type="button" @click="$router.push(`edit/${crosshair.id}`)">✒️ Edit</button>
-				<button type="button" @click="deleteCrosshair(crosshair)">🗑️ Delete</button>
+				<div class="buttons">
+					<button v-if="crosshair.id != options.selectedCrosshair" type="button" @click="selectCrosshair(crosshair)">Use</button>
+					<button type="button" @click="$router.push(`edit/${crosshair.id}`)">Edit</button>
+					<button type="button" @click="deleteCrosshair(crosshair)">Delete</button>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -38,6 +39,7 @@ async function selectCrosshair(crosshair: Crosshair) {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 300px);
 	gap: 1rem;
+	place-content: center;
 }
 
 .new-crosshair {
@@ -46,12 +48,42 @@ async function selectCrosshair(crosshair: Crosshair) {
 	display: flex;
 	place-content: center;
 	place-items: center;
+
+	font-size: 2rem;
+	color: var(--color-primary);
+	background: var(--color-background);
+	border: .3rem solid var(--color-primary);
+	border-radius: var(--border-radius-small);
 }
 
-.loading {
+.crosshair {
 	display: flex;
 	flex-direction: column;
+	gap: .5rem;
+	padding-bottom: .5rem;
+}
+.crosshair.selected {
+	background-color: var(--color-primary);
+	border-radius: var(--border-radius-small);
+}
+
+.crosshair .buttons {
+	display: flex;
+	gap: .5rem;
 	place-content: center;
-	place-items: center;
+}
+
+.crosshair .buttons button {
+	padding: 0.3rem 1rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: var(--color-text-section);
+	background-color: var(--color-primary);
+	border: none;
+	border-radius: var(--border-radius-small);
+}
+.crosshair.selected .buttons button {
+	color: var(--color-primary);
+	background-color: var(--color-text-section);
 }
 </style>
