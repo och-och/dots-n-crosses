@@ -21,7 +21,7 @@ function update(dot: Dot) {
 <template>
 	<ShapeEditor has-bottom-button>
 		<NumberInput
-			title="X"
+			title="Horizontal"
 			:min="-150"
 			:max="150"
 			:model-value="modelValue.position.x"
@@ -30,7 +30,7 @@ function update(dot: Dot) {
 			"
 		/>
 		<NumberInput
-			title="Y"
+			title="Vertical"
 			:min="-150"
 			:max="150"
 			:model-value="modelValue.position.y"

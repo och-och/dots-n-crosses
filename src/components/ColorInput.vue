@@ -104,14 +104,25 @@ function toText(value: string): string {
 
 input[type="color"] {
 	-webkit-appearance: none;
-	height: 1.5rem;
+	-moz-appearance: none;
+	height: 1rem;
+	padding: 0;
 	width: 100%;
 	background: transparent;
 	border: none;
 	border-radius: var(--border-radius-small);
 	cursor: pointer;
 }
-input[type="color"]::-webkit-color-swatch {
+::-webkit-color-swatch-wrapper,
+::-webkit-color-swatch {
+	height: 1rem;
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-radius: var(--border-radius-small);
+}
+::-moz-color-swatch {
+	height: 1rem;
 	border: none;
 	border-radius: var(--border-radius-small);
 }

@@ -54,6 +54,14 @@ async function selectCrosshair(crosshair: Crosshair) {
 	background: var(--color-background);
 	border: .3rem solid var(--color-primary);
 	border-radius: var(--border-radius-small);
+	transition: .2s border-width, .2s border-radius, .2s font-size;
+}
+.new-crosshair:hover {
+	scale: 1;
+	font-size: 6rem;
+	border-width: 1rem;
+	border-radius: var(--border-radius-big);
+	transition: .1s border-width, .1s border-radius, .1s font-size;
 }
 
 .crosshair {

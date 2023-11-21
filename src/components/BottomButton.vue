@@ -28,6 +28,7 @@
 	color: var(--color-text-section);
 	background-color: var(--color-background-section);
 	border-color: var(--color-background);
+	scale: 1;
 }
 .bottom-button:focus {
 	outline: none;

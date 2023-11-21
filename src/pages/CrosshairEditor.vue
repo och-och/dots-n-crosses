@@ -24,7 +24,7 @@ const crosshair = ref<Crosshair>(
 				id: crypto.randomUUID(),
 				dots: [],
 				lines: [],
-				style: { color: "#ff6ab5" }
+				style: { color: "#ff6ab5", outlineColor: "#000000", outlineThickness: 0 }
 		  }
 )
 
@@ -174,6 +174,12 @@ h1 {
 	background: var(--color-background);
 	border: none;
 	border-radius: var(--border-radius-small);
+	transition: font-size .2s;
+}
+.add-shape:hover {
+	font-size: 6rem;
+	scale: 1;
+	transition: font-size .1s;
 }
 .add-shape:first-child {
 	margin-bottom: 0;

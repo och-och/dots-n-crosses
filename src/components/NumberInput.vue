@@ -135,4 +135,7 @@ input[type="number"]:focus {
 	border: none;
 	border-radius: var(--border-radius-small);
 }
+.number-button:hover {
+	scale: 1;
+}
 </style>
