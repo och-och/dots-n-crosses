@@ -111,10 +111,13 @@ h1 {
 	flex-direction: column;
 	gap: 0.5rem;
 	padding-bottom: 0.5rem;
+	
+	border-radius: var(--border-radius-small);
+	border-top-left-radius: var(--border-radius-big);
+	border-top-right-radius: var(--border-radius-big);
 }
 .crosshair.selected {
 	background-color: var(--color-primary);
-	border-radius: var(--border-radius-small);
 }
 
 .crosshair .buttons {
