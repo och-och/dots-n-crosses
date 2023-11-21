@@ -11,9 +11,9 @@ import { requireString } from "@/utils/validator"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import ColorInput from "@/components/ColorInput.vue"
 import IconSave from "@/components/icons/IconSave.vue"
-import IconClose from "@/components/icons/IconClose.vue"
 import IconNew from "@/components/icons/IconNew.vue"
 import { defaultCrosshair, defaultDot, defaultLine } from "@/utils/defaults"
+import { crosshairEdited } from "@/utils/messages"
 
 const router = useRouter()
 const route = useRoute()
@@ -49,9 +49,9 @@ async function save() {
 	} else {
 		await addCrosshair(crosshair.value)
 	}
-	overwolf.windows
-		.getMainWindow()
-		.postMessage({ type: "update-ingame-crosshair", payload: { id: editingId } })
+
+	crosshairEdited.send({ crosshair: crosshair.value })
+
 	router.back()
 }
 </script>

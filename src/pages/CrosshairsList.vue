@@ -7,6 +7,7 @@ import IconNew from "@/components/icons/IconNew.vue"
 import IconSelect from "@/components/icons/IconSelect.vue"
 import IconEdit from "@/components/icons/IconEdit.vue"
 import IconDelete from "@/components/icons/IconDelete.vue"
+import { crosshairSelected } from "@/utils/messages"
 
 const crosshairsStore = useCrosshairs()
 const { crosshairs } = storeToRefs(crosshairsStore)
@@ -17,8 +18,8 @@ const { options } = storeToRefs(optionsStore)
 const { useCrosshair } = optionsStore
 
 async function selectCrosshair(crosshair: Crosshair) {
-	await useCrosshair(crosshair)
-	overwolf.windows.getMainWindow().postMessage({ type: "update-ingame-crosshair-selection" })
+	useCrosshair(crosshair)
+	crosshairSelected.send({ id: crosshair.id })
 }
 </script>
 
@@ -111,7 +112,7 @@ h1 {
 	flex-direction: column;
 	gap: 0.5rem;
 	padding-bottom: 0.5rem;
-	
+
 	border-radius: var(--border-radius-small);
 	border-top-left-radius: var(--border-radius-big);
 	border-top-right-radius: var(--border-radius-big);

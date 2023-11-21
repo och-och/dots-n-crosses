@@ -1,0 +1,14 @@
+:root {
+	--color-background: #222;
+	--color-background-section: #79ea95;
+	--color-primary: #79ea95;
+	--color-primary-transparent: #79ea9500;
+	--color-danger: #f92d66;
+
+	--color-text: #fff;
+	--color-text-section: #222;
+	--color-text-primary: #79ea95;
+
+	--border-radius-big: 1rem;
+	--border-radius-small: 0.5rem;
+}

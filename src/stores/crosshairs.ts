@@ -24,15 +24,15 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 		console.groupEnd()
 	}
 
-	async function loadCrosshair(id: string) {
+	async function loadCrosshair(id: string): Promise<Crosshair> {
 		console.log(`Loading crosshair ${id}`)
 		const rawCrosshair = await readFile(`crosshairs/${id}.json`).catch(() => "")
 		try {
 			const crosshair = validateCrosshair(JSON.parse(rawCrosshair))
-			crosshairsIndexed.value[crosshair.id] = crosshair
-			console.log(crosshair)
+			return crosshair
 		} catch {
 			console.error(`Couldn't validate crosshair ${id}`)
+			throw new Error(`Couldn't validate crosshair ${id}`)
 		}
 	}
 
