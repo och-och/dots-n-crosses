@@ -154,3 +154,14 @@ svg.emoji * {
 	opacity: 0;
 	translate: 0 -1rem;
 }
+
+/* Scrollbar */
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: var(--border-radius-small);
+}
+::-webkit-scrollbar {
+    width: 12px;
+    background: var(--color-background);
+}
