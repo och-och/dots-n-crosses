@@ -3,14 +3,14 @@
 	"type": "WebApp",
 	"meta": {
 		"name": "Dots&Crosses",
-		"version": "1.0.0",
+		"version": "0.1.0",
 		"minimum-overwolf-version": "0.77.10",
 		"author": "Och",
 		"icon": "logo.png",
 		"icon_gray": "logo-grayscale.png",
 		"launcher_icon": "icon.ico",
 		"window_icon": "logo.png",
-		"description": "Demo App"
+		"description": "The cool crosshair app"
 	},
 	"permissions": [
 		"Tray"
@@ -28,11 +28,14 @@
 		"launch_events": [
 			{
 				"event": "GameLaunch",
+				"tracked": false,
 				"event_data": {
 					"game_ids": [
 						216401
-					]
-				}
+					],
+					"wait_for_stable_framerate": 30
+				},
+				"start_minimized": true
 			}
 		],
 		"start_window": "BackgroundWindow",
