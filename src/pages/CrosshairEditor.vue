@@ -62,12 +62,15 @@ function deleteDot(index: number) {
 	crosshair.value.dots.splice(index, 1)
 }
 
-function save() {
+async function save() {
 	if (editingId !== null) {
-		updateCrosshair(crosshair.value)
+		await updateCrosshair(crosshair.value)
 	} else {
-		addCrosshair(crosshair.value)
+		await addCrosshair(crosshair.value)
 	}
+	overwolf.windows
+		.getMainWindow()
+		.postMessage({ type: "update-ingame-crosshair", payload: { id: editingId } })
 	router.back()
 }
 </script>

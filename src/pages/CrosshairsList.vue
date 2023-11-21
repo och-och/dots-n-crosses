@@ -14,7 +14,7 @@ const { useCrosshair } = optionsStore
 
 async function selectCrosshair(crosshair: Crosshair) {
 	await useCrosshair(crosshair)
-	overwolf.windows.getMainWindow().postMessage("refresh-ingame-crosshair")
+	overwolf.windows.getMainWindow().postMessage({ type: "update-ingame-crosshair-selection" })
 }
 </script>
 

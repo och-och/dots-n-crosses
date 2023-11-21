@@ -12,8 +12,7 @@ export const validateArray = <T>(array: T[], elementValidator: (element: T) => T
 
 export function validateType<T>(type: "string" | "number" | "boolean") {
 	return (value: T, defaultValue: T) => {
-		if (typeof value == type)
-			return value as T
+		if (typeof value == type) return value as T
 		return defaultValue
 	}
 }

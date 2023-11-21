@@ -1,5 +1,5 @@
 import { validateCrosshair } from "@/utils/crosshairValidator"
-import { deleteFile, exists, readDir, readFile, writeFile } from "@/utils/fs"
+import { deleteFile, readDir, readFile, writeFile } from "@/utils/fs"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
@@ -22,6 +22,18 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 			}
 		}
 		console.groupEnd()
+	}
+
+	async function loadCrosshair(id: string) {
+		console.log(`Loading crosshair ${id}`)
+		const rawCrosshair = await readFile(`crosshairs/${id}.json`).catch(() => "")
+		try {
+			const crosshair = validateCrosshair(JSON.parse(rawCrosshair))
+			crosshairsIndexed.value[crosshair.id] = crosshair
+			console.log(crosshair)
+		} catch {
+			console.error(`Couldn't validate crosshair ${id}`)
+		}
 	}
 
 	function saveCrosshair(crosshair: Crosshair) {
@@ -50,6 +62,7 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 		crosshairsIndexed,
 		crosshairs,
 		loadCrosshairs,
+		loadCrosshair,
 		saveCrosshair,
 		updateCrosshair,
 		addCrosshair,

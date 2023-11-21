@@ -1,4 +1,10 @@
-import { requireString, validateArray, validateBoolean, validateNumber, validateString } from "@/utils/validator"
+import {
+	requireString,
+	validateArray,
+	validateBoolean,
+	validateNumber,
+	validateString
+} from "@/utils/validator"
 
 export function validateCrosshairs(crosshairs: Crosshair[]): Crosshair[] {
 	return validateArray(crosshairs, validateCrosshair)
@@ -6,7 +12,11 @@ export function validateCrosshairs(crosshairs: Crosshair[]): Crosshair[] {
 
 export function validateCrosshair(crosshair: Crosshair): Crosshair {
 	return {
-		id: crosshair.id || (()=>{throw new Error("Validation error, crosshair has no id :(")})(),
+		id:
+			crosshair.id ||
+			(() => {
+				throw new Error("Validation error, crosshair has no id :(")
+			})(),
 		dots: crosshair.dots.map(validateDot),
 		lines: validateArray(crosshair.lines, validateLine),
 		style: validateStyle(crosshair.style)
