@@ -24,6 +24,7 @@ async function selectCrosshair(crosshair: Crosshair) {
 
 <template>
 	<main>
+		<h1>Crosshair Library</h1>
 		<div class="crosshair-list">
 			<button type="button" class="new-crosshair" @click="$router.push('/new')">
 				<IconNew :size="64" :weight="4" />
@@ -59,6 +60,17 @@ async function selectCrosshair(crosshair: Crosshair) {
 </template>
 
 <style scoped>
+main {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+h1 {
+	color: var(--color-primary);
+	text-align: center;
+}
+
 .crosshair-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 300px);

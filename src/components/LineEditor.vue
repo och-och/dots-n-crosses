@@ -58,7 +58,7 @@ function update(line: Line) {
 			@update:y="y => update({ ...modelValue, mirrorY: y })"
 		/>
 		<BottomButton @click="$emit('delete')">
-			<IconClose :size="16" :weight="8"/>
+			<IconClose :size="16" :weight="8" />
 		</BottomButton>
 	</ShapeEditor>
 </template>

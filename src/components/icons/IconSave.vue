@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(
 	defineProps<{
-		size: number,
+		size: number
 		weight: number
 	}>(),
 	{

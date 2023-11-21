@@ -79,14 +79,16 @@ async function save() {
 			<div class="section">
 				<h2>Dots</h2>
 				<div class="shape-list">
-					<DotEditor
-						v-for="(_, index) in crosshair.dots"
-						:key="index"
-						v-model="crosshair.dots[index]"
-						@delete="deleteDot(index)"
-					/>
+					<TransitionGroup name="editor-list">
+						<DotEditor
+							v-for="(_, index) in crosshair.dots"
+							:key="index"
+							v-model="crosshair.dots[index]"
+							@delete="deleteDot(index)"
+						/>
+					</TransitionGroup>
 					<button type="button" class="add-shape" @click="addDot">
-						<IconNew :size="64" :weight="4"/>
+						<IconNew :size="64" :weight="4" />
 					</button>
 				</div>
 			</div>
@@ -94,14 +96,16 @@ async function save() {
 			<div class="section">
 				<h2>Lines</h2>
 				<div class="shape-list">
-					<LineEditor
-						v-for="(_, index) in crosshair.lines"
-						:key="index"
-						v-model="crosshair.lines[index]"
-						@delete="deleteLine(index)"
-					/>
+					<TransitionGroup name="editor-list">
+						<LineEditor
+							v-for="(_, index) in crosshair.lines"
+							:key="index"
+							v-model="crosshair.lines[index]"
+							@delete="deleteLine(index)"
+						/>
+					</TransitionGroup>
 					<button type="button" class="add-shape" @click="addLine">
-						<IconNew :size="64" :weight="4"/>
+						<IconNew :size="64" :weight="4" />
 					</button>
 				</div>
 			</div>
@@ -111,14 +115,12 @@ async function save() {
 			<CrosshairPreview :crosshair="crosshair" />
 			<div class="preview-buttons">
 				<button type="button" class="preview-button with-icon" @click="save">
-					<IconSave :weight="4"/>
+					<IconSave :weight="4" />
 					Save
 				</button>
-				<button type="button" class="preview-button" @click="$router.back()">
-					Cancel
-				</button>
+				<button type="button" class="preview-button" @click="$router.back()">Cancel</button>
 			</div>
-			<pre>{{ toRaw(crosshair) }}</pre>
+			<!-- <pre>{{ toRaw(crosshair) }}</pre> -->
 		</div>
 	</main>
 </template>
@@ -126,6 +128,7 @@ async function save() {
 <style scoped>
 main {
 	display: flex;
+	flex-wrap: wrap-reverse;
 	place-content: center;
 	place-items: start;
 	gap: 2rem;
@@ -182,7 +185,7 @@ h1 {
 
 .preview {
 	position: sticky;
-	top: 2rem;
+	top: -3rem;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;

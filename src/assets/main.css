@@ -10,7 +10,8 @@
 	--color-background: #222;
 	--color-background-section: #79ea95;
 	--color-primary: #79ea95;
-	--color-danger: #F92D66;;
+	--color-primary-transparent: #79ea9500;
+	--color-danger: #f92d66;
 
 	--color-text: #fff;
 	--color-text-section: #222;
@@ -41,21 +42,27 @@ html {
 button {
 	--transition-scale: 0.2s;
 	--transition-shadow: 0.2s;
-	transition: scale var(--transition-scale), box-shadow var(--transition-shadow);
+	transition:
+		scale var(--transition-scale),
+		box-shadow var(--transition-shadow);
 }
 button:not(:disabled) {
-	box-shadow: 0 0 0 var(--color-primary), 0 0 0 var(--color-primary) inset;
+	box-shadow:
+		0 0 0 var(--color-primary-transparent),
+		0 0 0 var(--color-primary-transparent) inset;
 	cursor: pointer;
 }
 button:hover:not(:disabled) {
 	scale: 1.1;
-	--transition-scale: .1s;
+	--transition-scale: 0.1s;
 }
 button:focus {
 	outline: none;
-	box-shadow: 0 0 1rem var(--color-primary), 0 0 1rem var(--color-primary) inset;
+	box-shadow:
+		0 0 1rem var(--color-primary),
+		0 0 1rem var(--color-primary) inset;
 	z-index: 1;
-	--transition-shaodw: .1s;
+	--transition-shaodw: 0.1s;
 }
 
 /* Range */
@@ -130,4 +137,20 @@ svg.emoji * {
 ::selection {
 	color: var(--color-text-section);
 	background-color: var(--color-primary);
+}
+
+/* Transitions */
+
+.editor-list-enter-active,
+.editor-list-leave-active {
+	position: absolute;
+	transition: 0.3s;
+}
+.editor-list-enter-from {
+	opacity: 0;
+	translate: 0 1rem;
+}
+.editor-list-leave-to {
+	opacity: 0;
+	translate: 0 -1rem;
 }
