@@ -3,6 +3,7 @@ import NumberInput from "@/components/NumberInput.vue"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import BottomButton from "@/components/BottomButton.vue"
 import MirrorInput from "@/components/MirrorInput.vue"
+import IconClose from "@/components/icons/IconClose.vue"
 
 const emit = defineEmits<{
 	(e: "update:model-value", dot: Dot): void
@@ -50,6 +51,8 @@ function update(dot: Dot) {
 			@update:x="x => update({ ...modelValue, mirrorX: x })"
 			@update:y="y => update({ ...modelValue, mirrorY: y })"
 		/>
-		<BottomButton @click="$emit('delete')">✖</BottomButton>
+		<BottomButton @click="$emit('delete')">
+			<IconClose :size="16" :weight="8"/>
+		</BottomButton>
 	</ShapeEditor>
 </template>

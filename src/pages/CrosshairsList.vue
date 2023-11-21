@@ -3,6 +3,10 @@ import { useCrosshairs } from "@/stores/crosshairs"
 import { useOptions } from "@/stores/options"
 import CrosshairPreview from "@/components/CrosshairPreview.vue"
 import { storeToRefs } from "pinia"
+import IconNew from "@/components/icons/IconNew.vue"
+import IconSelect from "@/components/icons/IconSelect.vue"
+import IconEdit from "@/components/icons/IconEdit.vue"
+import IconDelete from "@/components/icons/IconDelete.vue"
 
 const crosshairsStore = useCrosshairs()
 const { crosshairs } = storeToRefs(crosshairsStore)
@@ -21,7 +25,9 @@ async function selectCrosshair(crosshair: Crosshair) {
 <template>
 	<main>
 		<div class="crosshair-list">
-			<button type="button" class="new-crosshair" @click="$router.push('/new')">+</button>
+			<button type="button" class="new-crosshair" @click="$router.push('/new')">
+				<IconNew :size="64" :weight="4" />
+			</button>
 			<div
 				class="crosshair"
 				:class="{ selected: crosshair.id == options.selectedCrosshair }"
@@ -35,12 +41,17 @@ async function selectCrosshair(crosshair: Crosshair) {
 						type="button"
 						@click="selectCrosshair(crosshair)"
 					>
-						Use
+						<IconSelect :weight="4" />
+						<!-- Use -->
 					</button>
 					<button type="button" @click="$router.push(`edit/${crosshair.id}`)">
-						Edit
+						<IconEdit :weight="4" />
+						<!-- Edit -->
 					</button>
-					<button type="button" @click="deleteCrosshair(crosshair)">Delete</button>
+					<button type="button" @click="deleteCrosshair(crosshair)">
+						<IconDelete :weight="4" />
+						<!-- Delete -->
+					</button>
 				</div>
 			</div>
 		</div>

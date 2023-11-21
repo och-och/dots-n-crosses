@@ -10,6 +10,9 @@ import { storeToRefs } from "pinia"
 import { requireString } from "@/utils/validator"
 import ShapeEditor from "@/components/ShapeEditor.vue"
 import ColorInput from "@/components/ColorInput.vue"
+import IconSave from "@/components/icons/IconSave.vue"
+import IconClose from "@/components/icons/IconClose.vue"
+import IconNew from "@/components/icons/IconNew.vue"
 import { defaultCrosshair, defaultDot, defaultLine } from "@/utils/defaults"
 
 const router = useRouter()
@@ -82,7 +85,9 @@ async function save() {
 						v-model="crosshair.dots[index]"
 						@delete="deleteDot(index)"
 					/>
-					<button type="button" class="add-shape" @click="addDot">+</button>
+					<button type="button" class="add-shape" @click="addDot">
+						<IconNew :size="64" :weight="4"/>
+					</button>
 				</div>
 			</div>
 
@@ -95,7 +100,9 @@ async function save() {
 						v-model="crosshair.lines[index]"
 						@delete="deleteLine(index)"
 					/>
-					<button type="button" class="add-shape" @click="addLine">+</button>
+					<button type="button" class="add-shape" @click="addLine">
+						<IconNew :size="64" :weight="4"/>
+					</button>
 				</div>
 			</div>
 		</form>
@@ -104,9 +111,12 @@ async function save() {
 			<CrosshairPreview :crosshair="crosshair" />
 			<div class="preview-buttons">
 				<button type="button" class="preview-button with-icon" @click="save">
-					💾 Save
+					<IconSave :weight="4"/>
+					Save
 				</button>
-				<button type="button" class="preview-button" @click="$router.back()">Cancel</button>
+				<button type="button" class="preview-button" @click="$router.back()">
+					Cancel
+				</button>
 			</div>
 			<pre>{{ toRaw(crosshair) }}</pre>
 		</div>
@@ -184,6 +194,9 @@ h1 {
 }
 
 .preview-button {
+	display: flex;
+	place-content: center;
+	place-items: center;
 	padding: 0.3rem 1rem;
 	font-size: 1.2rem;
 	font-weight: bold;

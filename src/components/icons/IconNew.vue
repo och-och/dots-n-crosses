@@ -1,0 +1,51 @@
+<script setup lang="ts">
+withDefaults(
+	defineProps<{
+		size: number,
+		weight: number
+	}>(),
+	{
+		size: 24,
+		weight: 2
+	}
+)
+</script>
+
+<template>
+	<svg class="emoji" viewBox="0 0 72 72" :height="size" xmlns="http://www.w3.org/2000/svg">
+		<g id="line">
+			<line
+				x1="36.0731"
+				x2="36.0731"
+				y1="22.3267"
+				y2="49.5769"
+				fill="none"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-miterlimit="10"
+				:stroke-width="weight"
+			/>
+			<line
+				x1="49.6982"
+				x2="22.4479"
+				y1="35.9518"
+				y2="35.9518"
+				fill="none"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-miterlimit="10"
+				:stroke-width="weight"
+			/>
+			<circle
+				cx="36.0731"
+				cy="35.9518"
+				r="23"
+				fill="none"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-miterlimit="10"
+				:stroke-width="weight"
+			/>
+		</g>
+	</svg>
+</template>
