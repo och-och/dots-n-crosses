@@ -36,13 +36,26 @@ html {
 	font-size: 1.2rem;
 }
 
+/* Button */
+
+button {
+	--transition-scale: 0.2s;
+	--transition-shadow: 0.2s;
+	transition: scale var(--transition-scale), box-shadow var(--transition-shadow);
+}
 button:not(:disabled) {
+	box-shadow: 0 0 0 var(--color-primary), 0 0 0 var(--color-primary) inset;
 	cursor: pointer;
-	transition: scale 0.2s;
 }
 button:hover:not(:disabled) {
 	scale: 1.1;
-	transition: scale 0.1s;
+	--transition-scale: .1s;
+}
+button:focus {
+	outline: none;
+	box-shadow: 0 0 1rem var(--color-primary), 0 0 1rem var(--color-primary) inset;
+	z-index: 1;
+	--transition-shaodw: .1s;
 }
 
 /* Range */
@@ -104,9 +117,17 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 /* Emoji */
+
 svg.emoji {
 	display: block;
 }
 svg.emoji * {
 	stroke: currentColor;
+}
+
+/* Selection */
+
+::selection {
+	color: var(--color-text-section);
+	background-color: var(--color-primary);
 }

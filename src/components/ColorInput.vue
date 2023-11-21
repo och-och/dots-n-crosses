@@ -103,6 +103,7 @@ function toText(value: string): string {
 }
 
 input[type="color"] {
+	outline: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	height: 1rem;
@@ -125,5 +126,15 @@ input[type="color"] {
 	height: 1rem;
 	border: none;
 	border-radius: var(--border-radius-small);
+}
+:focus::-webkit-color-swatch {
+	outline: none;
+	box-shadow: 0 0 1rem var(--color-primary);
+	z-index: 1;
+}
+:focus::-moz-color-swatch {
+	outline: none;
+	box-shadow: 0 0 1rem var(--color-primary);
+	z-index: 1;
 }
 </style>
