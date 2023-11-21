@@ -22,11 +22,24 @@ async function selectCrosshair(crosshair: Crosshair) {
 	<main>
 		<div class="crosshair-list">
 			<button type="button" class="new-crosshair" @click="$router.push('/new')">+</button>
-			<div class="crosshair" :class="{ selected: crosshair.id == options.selectedCrosshair }" v-for="crosshair in crosshairs" :key="crosshair.id">
+			<div
+				class="crosshair"
+				:class="{ selected: crosshair.id == options.selectedCrosshair }"
+				v-for="crosshair in crosshairs"
+				:key="crosshair.id"
+			>
 				<CrosshairPreview :crosshair="crosshair" />
 				<div class="buttons">
-					<button v-if="crosshair.id != options.selectedCrosshair" type="button" @click="selectCrosshair(crosshair)">Use</button>
-					<button type="button" @click="$router.push(`edit/${crosshair.id}`)">Edit</button>
+					<button
+						v-if="crosshair.id != options.selectedCrosshair"
+						type="button"
+						@click="selectCrosshair(crosshair)"
+					>
+						Use
+					</button>
+					<button type="button" @click="$router.push(`edit/${crosshair.id}`)">
+						Edit
+					</button>
 					<button type="button" @click="deleteCrosshair(crosshair)">Delete</button>
 				</div>
 			</div>
@@ -52,23 +65,29 @@ async function selectCrosshair(crosshair: Crosshair) {
 	font-size: 2rem;
 	color: var(--color-primary);
 	background: var(--color-background);
-	border: .3rem solid var(--color-primary);
+	border: 0.3rem solid var(--color-primary);
 	border-radius: var(--border-radius-small);
-	transition: .2s border-width, .2s border-radius, .2s font-size;
+	transition:
+		0.2s border-width,
+		0.2s border-radius,
+		0.2s font-size;
 }
 .new-crosshair:hover {
 	scale: 1;
 	font-size: 6rem;
 	border-width: 1rem;
 	border-radius: var(--border-radius-big);
-	transition: .1s border-width, .1s border-radius, .1s font-size;
+	transition:
+		0.1s border-width,
+		0.1s border-radius,
+		0.1s font-size;
 }
 
 .crosshair {
 	display: flex;
 	flex-direction: column;
-	gap: .5rem;
-	padding-bottom: .5rem;
+	gap: 0.5rem;
+	padding-bottom: 0.5rem;
 }
 .crosshair.selected {
 	background-color: var(--color-primary);
@@ -77,7 +96,7 @@ async function selectCrosshair(crosshair: Crosshair) {
 
 .crosshair .buttons {
 	display: flex;
-	gap: .5rem;
+	gap: 0.5rem;
 	place-content: center;
 }
 

@@ -1,4 +1,6 @@
-export function stylize(style: CustomProperties) {
+export function stylize(style?: CustomProperties): string {
+	if (!style) return ""
+
 	const styles: string[] = []
 	if (style.color) {
 		styles.push(`--color: ${style.color}`)

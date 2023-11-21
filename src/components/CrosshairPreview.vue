@@ -7,14 +7,17 @@ defineProps<{
 </script>
 
 <template>
-	<div class="display-crosshair">
+	<div
+		class="display-crosshair"
+		:style="`--color-preview-background: ${crosshair.previewBackground}`"
+	>
 		<DisplayCrosshair :crosshair="crosshair" />
 	</div>
 </template>
 
 <style scoped>
 .display-crosshair {
-	background-color: rgb(245, 241, 236);
+	background-color: var(--color-preview-background);
 	width: 300px;
 	height: 300px;
 	border-radius: var(--border-radius-small);

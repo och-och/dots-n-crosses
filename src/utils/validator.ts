@@ -3,11 +3,8 @@ export const validateString = validateType<string>("string")
 export const validateBoolean = validateType<boolean>("boolean")
 
 export const validateArray = <T>(array: T[], elementValidator: (element: T) => T) => {
-	assert(
-		typeof array == "object" && array instanceof Array,
-		() => new Error(`Validation error: ${array} is not an array!`)
-	)
-	return array.map(elementValidator)
+	if (array instanceof Array) return array.map(elementValidator)
+	return []
 }
 
 export function validateType<T>(type: "string" | "number" | "boolean") {

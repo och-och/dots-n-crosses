@@ -37,11 +37,11 @@ html {
 
 button:not(:disabled) {
 	cursor: pointer;
-	transition: scale .2s;
+	transition: scale 0.2s;
 }
 button:hover:not(:disabled) {
 	scale: 1.1;
-	transition: scale .1s;
+	transition: scale 0.1s;
 }
 
 /* Range */

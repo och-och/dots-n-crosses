@@ -12,6 +12,7 @@ declare global {
 		dots: Dot[]
 		lines: Line[]
 		style: CustomProperties
+		previewBackground: string
 	}
 
 	interface Line {
@@ -22,7 +23,7 @@ declare global {
 		angle: number
 		mirrorX: bool
 		mirrorY: bool
-		style: CustomProperties
+		style?: CustomProperties
 	}
 
 	interface Dot {
@@ -30,12 +31,12 @@ declare global {
 		size: number
 		mirrorX: bool
 		mirrorY: bool
-		style: CustomProperties
+		style?: CustomProperties
 	}
 
 	interface CustomProperties {
-		color?: string
-		outlineThickness?: number
-		outlineColor?: string
+		color: string
+		outlineThickness: number
+		outlineColor: string
 	}
 }

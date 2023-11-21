@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, toRaw } from "vue"
 import DotEditor from "@/components/DotEditor.vue"
 import LineEditor from "@/components/LineEditor.vue"
 import CrosshairPreview from "@/components/CrosshairPreview.vue"
@@ -8,6 +8,9 @@ import { useRoute, useRouter } from "vue-router"
 import { useCrosshairs } from "@/stores/crosshairs"
 import { storeToRefs } from "pinia"
 import { requireString } from "@/utils/validator"
+import ShapeEditor from "@/components/ShapeEditor.vue"
+import ColorInput from "@/components/ColorInput.vue"
+import { defaultCrosshair, defaultDot, defaultLine } from "@/utils/defaults"
 
 const router = useRouter()
 const route = useRoute()
@@ -18,48 +21,23 @@ const { crosshairsIndexed } = storeToRefs(crosshairsStore)
 const { updateCrosshair, addCrosshair } = crosshairsStore
 
 const crosshair = ref<Crosshair>(
-	editingId
-		? crosshairsIndexed.value[editingId]
-		: {
-				id: crypto.randomUUID(),
-				dots: [],
-				lines: [],
-				style: { color: "#ff6ab5", outlineColor: "#000000", outlineThickness: 0 }
-		  }
+	editingId ? crosshairsIndexed.value[editingId] : defaultCrosshair(crypto.randomUUID())
 )
 
-console.log(editingId)
-console.log(crosshair.value)
+function addDot() {
+	crosshair.value.dots.push(defaultDot())
+}
 
 function addLine() {
-	crosshair.value.lines.push({
-		angle: 0,
-		length: 5,
-		offset: 5,
-		thickness: 1,
-		roundness: 0,
-		mirrorX: false,
-		mirrorY: false,
-		style: {}
-	})
-}
-
-function deleteLine(index: number) {
-	crosshair.value.lines.splice(index, 1)
-}
-
-function addDot() {
-	crosshair.value.dots.push({
-		position: { x: 0, y: 0 },
-		size: 3,
-		mirrorX: false,
-		mirrorY: false,
-		style: {}
-	})
+	crosshair.value.lines.push(defaultLine())
 }
 
 function deleteDot(index: number) {
 	crosshair.value.dots.splice(index, 1)
+}
+
+function deleteLine(index: number) {
+	crosshair.value.lines.splice(index, 1)
 }
 
 async function save() {
@@ -86,6 +64,12 @@ async function save() {
 						:model-value="crosshair.style"
 						@update:model-value="style => (crosshair = { ...crosshair, style })"
 					/>
+					<ShapeEditor>
+						<ColorInput
+							title="Preview Background"
+							v-model="crosshair.previewBackground"
+						/>
+					</ShapeEditor>
 				</div>
 			</div>
 
@@ -124,6 +108,7 @@ async function save() {
 				</button>
 				<button type="button" class="preview-button" @click="$router.back()">Cancel</button>
 			</div>
+			<pre>{{ toRaw(crosshair) }}</pre>
 		</div>
 	</main>
 </template>
@@ -174,12 +159,12 @@ h1 {
 	background: var(--color-background);
 	border: none;
 	border-radius: var(--border-radius-small);
-	transition: font-size .2s;
+	transition: font-size 0.2s;
 }
 .add-shape:hover {
 	font-size: 6rem;
 	scale: 1;
-	transition: font-size .1s;
+	transition: font-size 0.1s;
 }
 .add-shape:first-child {
 	margin-bottom: 0;

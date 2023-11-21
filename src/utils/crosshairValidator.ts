@@ -1,9 +1,9 @@
-import {
-	validateArray,
-	validateBoolean,
-	validateNumber,
-	validateString
-} from "@/utils/validator"
+import { validateArray, validateBoolean, validateNumber, validateString } from "@/utils/validator"
+import { defaultCrosshair, defaultDot, defaultLine, defaultStyle } from "./defaults"
+
+const crosshairDefaults = defaultCrosshair("")
+const dotDefaults = defaultDot()
+const lineDefaults = defaultLine()
 
 export function validateCrosshairs(crosshairs: Crosshair[]): Crosshair[] {
 	return validateArray(crosshairs, validateCrosshair)
@@ -16,41 +16,63 @@ export function validateCrosshair(crosshair: Crosshair): Crosshair {
 			(() => {
 				throw new Error("Validation error, crosshair has no id :(")
 			})(),
-		dots: crosshair.dots.map(validateDot),
+		dots: validateArray(crosshair.dots, validateDot),
 		lines: validateArray(crosshair.lines, validateLine),
-		style: validateStyle(crosshair.style)
+		style: validateStyle(crosshair.style) ?? defaultStyle(),
+		previewBackground: validateString(
+			crosshair.previewBackground,
+			crosshairDefaults.previewBackground
+		)
 	}
 }
 
 function validateDot(dots: Dot): Dot {
 	return {
-		position: { x: validateNumber(dots.position.x, 0), y: validateNumber(dots.position.y, 0) },
-		size: validateNumber(dots.size, 1),
-		mirrorX: validateBoolean(dots.mirrorX, false),
-		mirrorY: validateBoolean(dots.mirrorY, false),
+		position: {
+			x: validateNumber(dots.position.x, dotDefaults.position.x),
+			y: validateNumber(dots.position.y, dotDefaults.position.y)
+		},
+		size: validateNumber(dots.size, dotDefaults.size),
+		mirrorX: validateBoolean(dots.mirrorX, dotDefaults.mirrorX),
+		mirrorY: validateBoolean(dots.mirrorY, dotDefaults.mirrorY),
 		style: validateStyle(dots.style)
 	}
 }
 
 function validateLine(line: Line): Line {
 	return {
-		offset: validateNumber(line.offset, 0),
-		length: validateNumber(line.length, 5),
-		thickness: validateNumber(line.thickness, 1),
-		roundness: validateNumber(line.roundness, 0),
-		angle: validateNumber(line.angle, 0),
-		mirrorX: validateBoolean(line.mirrorX, true),
-		mirrorY: validateBoolean(line.mirrorY, true),
+		offset: validateNumber(line.offset, lineDefaults.offset),
+		length: validateNumber(line.length, lineDefaults.length),
+		thickness: validateNumber(line.thickness, lineDefaults.thickness),
+		roundness: validateNumber(line.roundness, lineDefaults.roundness),
+		angle: validateNumber(line.angle, lineDefaults.angle),
+		mirrorX: validateBoolean(line.mirrorX, lineDefaults.mirrorX),
+		mirrorY: validateBoolean(line.mirrorY, lineDefaults.mirrorY),
 		style: validateStyle(line.style)
 	}
 }
 
-function validateStyle(style: CustomProperties): CustomProperties {
-	const recreated: CustomProperties = {}
-	if ("color" in style) recreated.color = validateString(style.color as string, "#FFFFFF")
-	if ("outlineColor" in style)
-		recreated.outlineColor = validateString(style.outlineColor as string, "#000000")
-	if ("outlineThickness" in style)
-		recreated.outlineThickness = validateNumber(style.outlineThickness as number, 0)
-	return recreated
+function validateStyle<T extends CustomProperties | undefined>(rawStyle: T) {
+	if (!rawStyle || !(typeof rawStyle == "object")) {
+		return undefined
+	}
+
+	const style: CustomProperties = defaultStyle()
+
+	if ("color" in rawStyle) {
+		style.color = validateString(rawStyle.color as string, style.color)
+	}
+
+	if ("outlineColor" in rawStyle) {
+		style.outlineColor = validateString(rawStyle.outlineColor as string, style.outlineColor)
+	}
+
+	if ("outlineThickness" in rawStyle) {
+		style.outlineThickness = validateNumber(
+			rawStyle.outlineThickness as number,
+			style.outlineThickness
+		)
+	}
+
+	return style
 }
