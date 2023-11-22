@@ -19,11 +19,11 @@
 		"game_targeting": {
 			"type": "dedicated",
 			"game_ids": [
-				216401
+				21640
 			]
 		},
 		"game_events": [
-			216401
+			21640
 		],
 		"launch_events": [
 			{
@@ -31,7 +31,7 @@
 				"tracked": false,
 				"event_data": {
 					"game_ids": [
-						216401
+						21640
 					],
 					"wait_for_stable_framerate": 30
 				},
