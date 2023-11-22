@@ -8,12 +8,16 @@ import { OWGames } from "@overwolf/overwolf-api-ts/dist"
 createApp(App).use(createPinia()).mount("#app")
 
 overwolf.windows.getCurrentWindow(async ({ window }) => {
-	if (!window) return
+	updateWindowPosition(window, await OWGames.getRunningGameInfo())
 
-	const game = await OWGames.getRunningGameInfo()
+	overwolf.games.onGameInfoUpdated.addListener(({ gameInfo, resolutionChanged }) => {
+		if (resolutionChanged) updateWindowPosition(window, gameInfo!)
+	})
+})
 
-	const left = game.logicalWidth / 2 - 150
-	const top = game.logicalHeight / 2 - 150
+async function updateWindowPosition(window: overwolf.windows.WindowInfo, gameSize: { logicalWidth: number, logicalHeight: number }) {
+	const left = gameSize.logicalWidth / 2 - 150
+	const top = gameSize.logicalHeight / 2 - 150
 
 	overwolf.windows.changePosition(window.id, left, top)
-})
+}
