@@ -1,4 +1,5 @@
-import { OWGames, OWGameListener, OWWindow } from "@overwolf/overwolf-api-ts"
+import { gameEventEmitted } from "@/utils/messages"
+import { OWGames, OWGameListener, OWWindow, OWGamesEvents } from "@overwolf/overwolf-api-ts"
 
 const VALORANT_ID = 21640
 const launchOriginsToOpenMainWindow = [
@@ -25,11 +26,6 @@ async function launch() {
 	gameListener = new OWGameListener({ onGameStarted, onGameEnded })
 	gameListener.start()
 
-	{
-		const gameInfo = await OWGames.getRunningGameInfo()
-		if (gameInfo) onGameStarted(gameInfo)
-	}
-
 	createTrayIcon()
 
 	overwolf.extensions.onAppLaunchTriggered.addListener(event => {
@@ -39,6 +35,69 @@ async function launch() {
 		}
 	})
 }
+
+function listenForGameData() {
+	const features = [
+		// "gep_internal",
+		// "me",
+		// "game_info",
+		"match_info"
+		// "kill",
+		// "death"
+	]
+
+	new OWGamesEvents(
+		{
+			onNewEvents(event) {
+				gameEventEmitted.send(event)
+			},
+			onInfoUpdates(info) {
+				// console.log("INFO", info)
+			}
+		},
+		features,
+		5
+	).start()
+
+	// overwolf.games.events.getInfo(info => console.log("Game info", info))
+
+	// overwolf.games.onGameInfoUpdated.addListener(info => console.log("GAMEINFO", info))
+
+	// overwolf.games.events.onInfoUpdates2.addListener(({ info, feature }) => {
+	// 	console.log("INFO", info, feature)
+	// })
+
+	// overwolf.games.events.onNewEvents.addListener(({ events }) => {
+	// 	console.log("EVENTS", events)
+	// 	// for (const event of events) {
+	// 	// 	if (event.name == "match_start") isDisplayed.value = true
+	// 	// 	if (event.name == "match_end") isDisplayed.value = false
+	// 	// }
+	// })
+
+	// overwolf.games.events.onError.addListener((error) => console.error("ERROR", error))
+
+	// setTimeout(setFeatures, 1000)
+}
+
+// function setFeatures() {
+// const features = [
+// 	"gep_internal",
+// 	"me",
+// 	"game_info",
+// 	"match_info",
+// 	"kill",
+// 	"death"
+// ]
+//
+// overwolf.games.events.setRequiredFeatures(features, ({ error, supportedFeatures }) => {
+// 	if (error) {
+// 		console.error("Oh no features can't be set!", error)
+// 		return setTimeout(setFeatures, 1000);
+// 	}
+// 	console.log("Features set!", supportedFeatures)
+// })
+// }
 
 function createTrayIcon() {
 	const actions: { [action: string]: (() => void) | undefined } = {
@@ -59,9 +118,7 @@ function createTrayIcon() {
 	}
 
 	overwolf.os.tray.setMenu(trayOptions, res => {
-		if (res.error) {
-			return console.error(res.error)
-		}
+		if (res.error) return console.error(res.error)
 		console.log("Created a tray icon")
 	})
 
@@ -73,26 +130,21 @@ function createTrayIcon() {
 
 function onGameStarted(gameInfo?: overwolf.games.RunningGameInfo) {
 	console.log(`Running game`)
-	if (!gameInfo) {
-		return console.log(`Or not. Info is ${gameInfo}`)
-	}
+	if (!gameInfo) return console.log(`Or not. Info is ${gameInfo}`)
 
 	console.log(`Got it, the game id is ${gameInfo.classId}`)
-	if (gameInfo.classId == VALORANT_ID) {
-		console.log("(It is valorant)")
-		ingameWindow.restore()
-	}
+	if (gameInfo.classId != VALORANT_ID) return
+
+	console.log("(It is valorant)")
+	ingameWindow.restore()
+	listenForGameData()
 }
 
 function onGameEnded(gameInfo?: overwolf.games.RunningGameInfo) {
 	console.log(`Ending game`)
-	if (!gameInfo) {
-		return console.log(`Or not. Info is ${gameInfo}`)
-	}
+	if (!gameInfo) return console.log(`Or not. Info is ${gameInfo}`)
 
 	console.log(`Got it, the game id is ${gameInfo.classId}`)
-	if (gameInfo.classId == VALORANT_ID) {
-		console.log("(It is valorant)")
-		ingameWindow.close()
-	}
+	if (gameInfo.classId != VALORANT_ID) console.log("(It is valorant)")
+	ingameWindow.close()
 }

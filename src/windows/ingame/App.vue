@@ -4,7 +4,7 @@ import { useOptions } from "@/stores/options"
 import { storeToRefs } from "pinia"
 import { onMounted, ref } from "vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
-import { crosshairEdited, crosshairSelected } from "@/utils/messages"
+import { crosshairEdited, crosshairSelected, gameEventEmitted } from "@/utils/messages"
 
 const optionsStore = useOptions()
 const { options } = storeToRefs(optionsStore)
@@ -71,10 +71,19 @@ crosshairEdited.listen(({ crosshair: newCrosshair }) => {
 
 	crosshair.value = newCrosshair
 })
+
+const isDisplayed = ref(false)
+
+gameEventEmitted.listen(({ events }) => {
+	for (const event of events) {
+		if (event.name == "match_start") isDisplayed.value = true
+		if (event.name == "match_end") isDisplayed.value = false
+	}
+})
 </script>
 
 <template>
-	<main>
+	<main v-if="isDisplayed">
 		<div v-if="crosshair == 'pending'" class="message">
 			<p>Loading crosshair...</p>
 		</div>

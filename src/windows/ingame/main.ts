@@ -15,7 +15,10 @@ overwolf.windows.getCurrentWindow(async ({ window }) => {
 	})
 })
 
-async function updateWindowPosition(window: overwolf.windows.WindowInfo, gameSize: { logicalWidth: number, logicalHeight: number }) {
+async function updateWindowPosition(
+	window: overwolf.windows.WindowInfo,
+	gameSize: { logicalWidth: number; logicalHeight: number }
+) {
 	const left = gameSize.logicalWidth / 2 - 150
 	const top = gameSize.logicalHeight / 2 - 150
 
