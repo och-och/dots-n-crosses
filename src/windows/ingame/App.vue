@@ -80,6 +80,10 @@ gameEventEmitted.listen(({ events }) => {
 		if (event.name == "match_end") isDisplayed.value = false
 	}
 })
+
+overwolf.games.events.getInfo(
+	({ success, res }) => success && res.match_info.pseudo_match_id && (isDisplayed.value = true)
+)
 </script>
 
 <template>
