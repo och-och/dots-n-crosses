@@ -16,16 +16,12 @@ const props = defineProps<{
 	selected: boolean
 }>()
 
-const {crosshair, dot, selected} = toRefs(props)
+const { crosshair, dot, selected } = toRefs(props)
 </script>
 
 <template>
-	<ShapeEditor
-		has-bottom-button
-		:selected="selected"
-		@click="$emit('select')"
-	>
-		<CrosshairPreview :crosshair="{ ...crosshair, lines:[], dots:[dot] }" />
+	<ShapeEditor has-bottom-button :selected="selected" @click="$emit('select')">
+		<CrosshairPreview :crosshair="{ ...crosshair, lines: [], dots: [dot] }" />
 		<BottomButton @click.stop="$emit('delete')">
 			<IconClose :size="16" :weight="8" />
 		</BottomButton>

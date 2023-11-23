@@ -1,5 +1,6 @@
 import { validateCrosshair } from "@/utils/crosshairValidator"
 import { deleteFile, readDir, readFile, writeFile } from "@/utils/fs"
+import { serializeCrosshair } from "@/utils/serialize"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
@@ -12,9 +13,14 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 		const { files } = await readDir("crosshairs").catch(() => ({ files: [] as string[] }))
 		console.groupCollapsed("crosshairs")
 		for (const fileName of files) {
+			const id = fileName.match(/^crosshairs[/\\](?<id>.*)\.json$/)?.groups?.id
+			if (!id) {
+				console.log(`Encountered file with incorrect file name, skipping. (${fileName})`)
+				continue
+			}
 			const rawCrosshair = await readFile(fileName).catch(() => "")
 			try {
-				const crosshair = validateCrosshair(JSON.parse(rawCrosshair))
+				const crosshair = validateCrosshair(JSON.parse(rawCrosshair), id)
 				crosshairsIndexed.value[crosshair.id] = crosshair
 				console.log(crosshair)
 			} catch {
@@ -28,7 +34,7 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 		console.log(`Loading crosshair ${id}`)
 		const rawCrosshair = await readFile(`crosshairs/${id}.json`).catch(() => "")
 		try {
-			const crosshair = validateCrosshair(JSON.parse(rawCrosshair))
+			const crosshair = validateCrosshair(JSON.parse(rawCrosshair), id)
 			return crosshair
 		} catch {
 			console.error(`Couldn't validate crosshair ${id}`)
@@ -36,14 +42,14 @@ export const useCrosshairs = defineStore("crosshairs", () => {
 		}
 	}
 
-	function saveCrosshair(crosshair: Crosshair) {
+	async function saveCrosshair(crosshair: Crosshair) {
 		console.log("Saving crosshair", crosshair)
-		writeFile(`crosshairs/${crosshair.id}.json`, JSON.stringify(crosshair))
+		await writeFile(`crosshairs/${crosshair.id}.json`, serializeCrosshair(crosshair))
 	}
 
-	function addCrosshair(crosshair: Crosshair) {
+	async function addCrosshair(crosshair: Crosshair) {
 		crosshairsIndexed.value[crosshair.id] = crosshair
-		saveCrosshair(crosshair)
+		await saveCrosshair(crosshair)
 	}
 
 	function updateCrosshair(crosshair: Crosshair) {

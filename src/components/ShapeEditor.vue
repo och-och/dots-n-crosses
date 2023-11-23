@@ -12,7 +12,7 @@ withDefaults(
 </script>
 
 <template>
-	<div class="shape-editor" :class="{ 'has-bottom-button': hasBottomButton, 'selected': selected }">
+	<div class="shape-editor" :class="{ 'has-bottom-button': hasBottomButton, selected: selected }">
 		<slot></slot>
 	</div>
 </template>
@@ -36,7 +36,7 @@ withDefaults(
 
 .shape-editor.selected {
 	background-color: var(--color-primary);
-	box-shadow: 0 .5rem 1.5rem -1rem var(--color-shadow);
+	box-shadow: 0 0.5rem 1.5rem -1rem var(--color-shadow);
 	background-image: linear-gradient(to bottom, var(--color-highlight), var(--color-primary));
 }
 </style>

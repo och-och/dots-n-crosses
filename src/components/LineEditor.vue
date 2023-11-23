@@ -3,7 +3,7 @@ import NumberInput from "@/components/NumberInput.vue"
 import MirrorInput from "@/components/MirrorInput.vue"
 
 const emit = defineEmits<{
-	(e: 'update:line', line: Line): void
+	(e: "update:line", line: Line): void
 }>()
 
 defineProps<{

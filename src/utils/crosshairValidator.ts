@@ -5,17 +5,9 @@ const crosshairDefaults = defaultCrosshair("")
 const dotDefaults = defaultDot()
 const lineDefaults = defaultLine()
 
-export function validateCrosshairs(crosshairs: Crosshair[]): Crosshair[] {
-	return validateArray(crosshairs, validateCrosshair)
-}
-
-export function validateCrosshair(crosshair: Crosshair): Crosshair {
+export function validateCrosshair(crosshair: Crosshair, id: string): Crosshair {
 	return {
-		id:
-			crosshair.id ||
-			(() => {
-				throw new Error("Validation error, crosshair has no id :(")
-			})(),
+		id: crosshair.id || id,
 		dots: validateArray(crosshair.dots, validateDot),
 		lines: validateArray(crosshair.lines, validateLine),
 		style: validateStyle(crosshair.style) ?? defaultStyle(),

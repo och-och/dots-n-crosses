@@ -8,10 +8,13 @@ import IconSelect from "@/components/icons/IconSelect.vue"
 import IconEdit from "@/components/icons/IconEdit.vue"
 import IconDelete from "@/components/icons/IconDelete.vue"
 import { crosshairSelected } from "@/utils/messages"
+import { validateCrosshair } from "@/utils/crosshairValidator"
+import { promisify } from "@/utils/promisify"
+import { tryExpression } from "@/utils/tryExpression"
 
 const crosshairsStore = useCrosshairs()
 const { crosshairs } = storeToRefs(crosshairsStore)
-const { deleteCrosshair } = crosshairsStore
+const { deleteCrosshair, loadCrosshairs, addCrosshair } = crosshairsStore
 
 const optionsStore = useOptions()
 const { options } = storeToRefs(optionsStore)
@@ -21,15 +24,52 @@ async function selectCrosshair(crosshair: Crosshair) {
 	useCrosshair(crosshair)
 	crosshairSelected.send({ id: crosshair.id })
 }
+
+function refresh() {
+	loadCrosshairs()
+}
+
+async function pasteCrosshair() {
+	const clipboardData = (await promisify(overwolf.utils.getFromClipboard)) || null
+	if (!clipboardData) {
+		alert("Copy a crosshair first!")
+		return
+	}
+
+	const crosshair = tryExpression<Crosshair | void>(
+		() => validateCrosshair(JSON.parse(clipboardData), crypto.randomUUID()),
+		() => alert("Failed to parse the crosshair 😔 Make sure you copied the right thing.")
+	)
+	if (!crosshair) {
+		return
+	}
+
+	tryExpression<void>(
+		() => addCrosshair(crosshair),
+		() => alert("Failed to save the crosshair 😔")
+	)
+}
 </script>
 
 <template>
 	<main>
 		<h1>Crosshair Library</h1>
 		<div class="crosshair-list">
-			<button type="button" class="new-crosshair" @click="$router.push('/new')">
-				<IconNew :size="64" :weight="4" />
-			</button>
+			<div class="crosshair">
+				<button type="button" class="new-crosshair" @click="$router.push('/new')">
+					<IconNew :size="64" :weight="4" />
+				</button>
+				<div class="buttons">
+					<button type="button" @click="refresh">
+						<!-- <IconSelect :weight="4" /> -->
+						Refresh
+					</button>
+					<button type="button" @click="pasteCrosshair">
+						<!-- <IconSelect :weight="4" /> -->
+						Import
+					</button>
+				</div>
+			</div>
 			<div
 				class="crosshair"
 				:class="{ selected: crosshair.id == options.selectedCrosshair }"

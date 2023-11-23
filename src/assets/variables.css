@@ -1,5 +1,6 @@
 :root {
-	--color-green: #79ea95; --color-green-transparent: #79ea9500;
+	--color-green: #79ea95;
+	--color-green-transparent: #79ea9500;
 	--color-yellow: #ccea79;
 
 	--color-background: #222324;
@@ -20,7 +21,8 @@
 }
 
 :root.light {
-	--color-green: #62d97f; --color-green-transparent: #62d97f00;
+	--color-green: #62d97f;
+	--color-green-transparent: #62d97f00;
 	--color-yellow: #ccea79;
 
 	--color-background: #e4fbf4;
