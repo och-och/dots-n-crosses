@@ -18,8 +18,14 @@ defineProps<{
 <style scoped>
 .display-crosshair {
 	background-color: var(--color-preview-background);
-	width: 300px;
-	height: 300px;
+	max-width: 300px;
+	width: 100%;
+	aspect-ratio: 1;
+	margin: 0 auto;
 	border-radius: var(--border-radius-small);
+}
+.display-crosshair :deep(svg) {
+	width: 100%;
+	aspect-ratio: 1;
 }
 </style>

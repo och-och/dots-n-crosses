@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, toRaw } from "vue"
+import { computed, ref, toRaw } from "vue"
+import DotShape from "@/components/DotShape.vue"
 import DotEditor from "@/components/DotEditor.vue"
-import LineEditor from "@/components/LineEditor.vue"
+import LineShape from "@/components/LineShape.vue"
 import CrosshairPreview from "@/components/CrosshairPreview.vue"
 import StyleEditor from "@/components/StyleEditor.vue"
 import { useRoute, useRouter } from "vue-router"
@@ -9,11 +10,13 @@ import { useCrosshairs } from "@/stores/crosshairs"
 import { storeToRefs } from "pinia"
 import { requireString } from "@/utils/validator"
 import ShapeEditor from "@/components/ShapeEditor.vue"
+import LineEditor from "@/components/LineEditor.vue"
 import ColorInput from "@/components/ColorInput.vue"
 import IconSave from "@/components/icons/IconSave.vue"
 import IconNew from "@/components/icons/IconNew.vue"
 import { defaultCrosshair, defaultDot, defaultLine } from "@/utils/defaults"
 import { crosshairEdited } from "@/utils/messages"
+import { deproxy } from "@/utils/deproxy"
 
 const router = useRouter()
 const route = useRoute()
@@ -24,23 +27,49 @@ const { crosshairsIndexed } = storeToRefs(crosshairsStore)
 const { updateCrosshair, addCrosshair } = crosshairsStore
 
 const crosshair = ref<Crosshair>(
-	editingId ? crosshairsIndexed.value[editingId] : defaultCrosshair(crypto.randomUUID())
+	editingId ? deproxy(crosshairsIndexed.value[editingId]) : defaultCrosshair(crypto.randomUUID())
 )
+
+const sameId = (id: string) => (thing: { id: string }) => id == thing.id
 
 function addDot() {
 	crosshair.value.dots.push(defaultDot())
 }
 
 function addLine() {
-	crosshair.value.lines.push(defaultLine())
+	const line = defaultLine()
+	crosshair.value.lines.push(line)
+	selection.value = { type: "line", id: line.id }
 }
 
-function deleteDot(index: number) {
-	crosshair.value.dots.splice(index, 1)
+function deleteDot(id: string) {
+	crosshair.value.dots.splice(
+		crosshair.value.dots.findIndex(sameId(id)),
+		1
+	)
 }
 
-function deleteLine(index: number) {
-	crosshair.value.lines.splice(index, 1)
+function deleteLine(id: string) {
+	crosshair.value.lines.splice(
+		crosshair.value.lines.findIndex(sameId(id)),
+		1
+	)
+}
+
+function updateDot(dot: Dot) {
+	crosshair.value.dots.splice(
+		crosshair.value.dots.findIndex(sameId(dot.id)),
+		1,
+		dot
+	)
+}
+
+function updateLine(line: Line) {
+	crosshair.value.lines.splice(
+		crosshair.value.lines.findIndex(sameId(line.id)),
+		1,
+		line
+	)
 }
 
 async function save() {
@@ -54,11 +83,23 @@ async function save() {
 
 	router.back()
 }
+
+type Selection
+	= { type: "line", id: string }
+	| { type: "dot" , id: string }
+	| { type: "none", id: string }
+
+const none = { type: "none" as const, id: "none" }
+
+const selection = ref<Selection>(none)
 </script>
 
 <template>
 	<main>
 		<form class="options" @submit.prevent="">
+
+			<!-- Options -->
+
 			<h1>Options</h1>
 			<div class="section">
 				<h2>Style</h2>
@@ -76,41 +117,50 @@ async function save() {
 				</div>
 			</div>
 
+			<!-- Dots -->
+
 			<div class="section">
 				<h2>Dots</h2>
 				<div class="shape-list">
-					<TransitionGroup name="editor-list">
-						<DotEditor
-							v-for="(_, index) in crosshair.dots"
-							:key="index"
-							v-model="crosshair.dots[index]"
-							@delete="deleteDot(index)"
-						/>
-					</TransitionGroup>
+					<DotShape
+						v-for="dot in crosshair.dots"
+						:key="dot.id"
+						:crosshair="crosshair"
+						:dot="dot"
+						:selected="selection.type == 'dot' && selection.id == dot.id"
+						@select="selection = {type: 'dot', id: dot.id}"
+						@delete="deleteDot(dot.id)"
+					/>
 					<button type="button" class="add-shape" @click="addDot">
 						<IconNew :size="64" :weight="4" />
 					</button>
 				</div>
 			</div>
 
+			<!-- Lines -->
+
 			<div class="section">
 				<h2>Lines</h2>
 				<div class="shape-list">
-					<TransitionGroup name="editor-list">
-						<LineEditor
-							v-for="(_, index) in crosshair.lines"
-							:key="index"
-							v-model="crosshair.lines[index]"
-							@delete="deleteLine(index)"
-						/>
-					</TransitionGroup>
+					<LineShape
+						v-for="line in crosshair.lines"
+						:key="line.id"
+						:crosshair="crosshair"
+						:line="line"
+						:selected="selection.type == 'line' && selection.id == line.id"
+						@select="selection = {type: 'line', id: line.id}"
+						@delete="deleteLine(line.id)"
+					/>
 					<button type="button" class="add-shape" @click="addLine">
 						<IconNew :size="64" :weight="4" />
 					</button>
 				</div>
 			</div>
 		</form>
-		<div class="preview">
+
+		<!-- Preview -->
+
+		<div class="right-panel">
 			<h1>Preview</h1>
 			<CrosshairPreview :crosshair="crosshair" />
 			<div class="preview-buttons">
@@ -120,7 +170,19 @@ async function save() {
 				</button>
 				<button type="button" class="preview-button" @click="$router.back()">Cancel</button>
 			</div>
-			<!-- <pre>{{ toRaw(crosshair) }}</pre> -->
+
+			<!-- Properties -->
+
+			<LineEditor
+				v-if="selection.type == 'line'"
+				:line="crosshair.lines.find(sameId(selection.id))!"
+				@update:line="line => updateLine(line)"
+			/>
+			<DotEditor
+				v-if="selection.type == 'dot'"
+				:dot="crosshair.dots.find(sameId(selection.id))!"
+				@update:dot="dot => updateDot(dot)"
+			/>
 		</div>
 	</main>
 </template>
@@ -157,7 +219,7 @@ h1 {
 
 .shape-list {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 	gap: 1rem;
 }
 
@@ -183,7 +245,7 @@ h1 {
 	margin-bottom: 0;
 }
 
-.preview {
+.right-panel {
 	position: sticky;
 	top: -3rem;
 	display: flex;

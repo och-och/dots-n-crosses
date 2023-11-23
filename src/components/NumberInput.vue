@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:model-value"])
+const emit = defineEmits<{
+	(e: "update:model-value", modelValue: number): void
+}>()
+
 withDefaults(
 	defineProps<{
 		modelValue?: number

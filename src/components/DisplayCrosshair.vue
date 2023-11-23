@@ -9,8 +9,8 @@ defineProps<{
 </script>
 
 <template>
-	<svg version="1.1" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
-		<g :style="stylize(crosshair.style)" transform="translate(150, 150)">
+	<svg version="1.1" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg">
+		<g :style="stylize(crosshair.style)">
 			<!-- Center Dot -->
 			<DisplayDot v-for="(dot, index) in crosshair.dots" :key="index" :dot="dot" />
 			<!-- Crosshair -->

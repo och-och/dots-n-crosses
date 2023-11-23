@@ -18,6 +18,7 @@ const fallbackCrosshair: Crosshair = {
 	dots: [],
 	lines: [
 		{
+			id: "1",
 			offset: 2,
 			length: 10,
 			thickness: 2,
@@ -27,6 +28,7 @@ const fallbackCrosshair: Crosshair = {
 			angle: 0
 		},
 		{
+			id: "2",
 			offset: 2,
 			length: 10,
 			thickness: 2,

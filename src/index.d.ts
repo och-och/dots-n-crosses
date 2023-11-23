@@ -16,6 +16,7 @@ declare global {
 	}
 
 	interface Line {
+		id: string
 		offset: number
 		length: number
 		thickness: number
@@ -27,6 +28,7 @@ declare global {
 	}
 
 	interface Dot {
+		id: string
 		position: { x: number; y: number }
 		size: number
 		mirrorX: bool

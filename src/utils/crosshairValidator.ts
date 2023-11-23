@@ -26,21 +26,23 @@ export function validateCrosshair(crosshair: Crosshair): Crosshair {
 	}
 }
 
-function validateDot(dots: Dot): Dot {
+function validateDot(dot: Dot): Dot {
 	return {
+		id: validateString(dot.id, crypto.randomUUID()),
 		position: {
-			x: validateNumber(dots.position.x, dotDefaults.position.x),
-			y: validateNumber(dots.position.y, dotDefaults.position.y)
+			x: validateNumber(dot.position.x, dotDefaults.position.x),
+			y: validateNumber(dot.position.y, dotDefaults.position.y)
 		},
-		size: validateNumber(dots.size, dotDefaults.size),
-		mirrorX: validateBoolean(dots.mirrorX, dotDefaults.mirrorX),
-		mirrorY: validateBoolean(dots.mirrorY, dotDefaults.mirrorY),
-		style: validateStyle(dots.style)
+		size: validateNumber(dot.size, dotDefaults.size),
+		mirrorX: validateBoolean(dot.mirrorX, dotDefaults.mirrorX),
+		mirrorY: validateBoolean(dot.mirrorY, dotDefaults.mirrorY),
+		style: validateStyle(dot.style)
 	}
 }
 
 function validateLine(line: Line): Line {
 	return {
+		id: validateString(line.id, crypto.randomUUID()),
 		offset: validateNumber(line.offset, lineDefaults.offset),
 		length: validateNumber(line.length, lineDefaults.length),
 		thickness: validateNumber(line.thickness, lineDefaults.thickness),

@@ -21,12 +21,12 @@
 	font-weight: bold;
 	color: var(--color-primary);
 	background-color: var(--color-background);
-	border: 0.3rem solid var(--color-background-section);
+	border: 0.3rem solid var(--color-primary);
 	border-radius: var(--border-radius-small);
 }
 .bottom-button:hover {
 	color: var(--color-text-section);
-	background-color: var(--color-background-section);
+	background-color: var(--color-primary);
 	border-color: var(--color-background);
 	scale: 1;
 }

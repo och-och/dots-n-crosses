@@ -1,14 +1,32 @@
 :root {
+	--color-green: #79ea95; --color-green-transparent: #79ea9500;
+	--color-yellow: #ccea79;
+
 	--color-background: #222324;
-	--color-background-section: #79ea95;
-	--color-primary: #79ea95;
-	--color-primary-transparent: #79ea9500;
-	--color-danger: #f92d66;
+	--color-background-transparent: #22232400;
+	--color-background-section: var(--color-green);
+	--color-primary: var(--color-green);
+	--color-primary-transparent: var(--color-green-transparent);
+	--color-highlight: var(--color-yellow);
 
 	--color-text: #fff;
 	--color-text-section: #222324;
-	--color-text-primary: #79ea95;
+	--color-text-primary: var(--color-green);
+
+	--color-shadow: #2228;
 
 	--border-radius-big: 1rem;
 	--border-radius-small: 0.5rem;
+}
+
+:root.light {
+	--color-green: #62d97f; --color-green-transparent: #62d97f00;
+	--color-yellow: #ccea79;
+
+	--color-background: #e4fbf4;
+	--color-background-transparent: #e4fbf400;
+
+	--color-text: #010;
+	--color-text-section: #fff;
+	--color-text-primary: #51b76a;
 }
