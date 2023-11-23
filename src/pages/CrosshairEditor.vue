@@ -36,7 +36,9 @@ const crosshair = ref<Crosshair>(
 const sameId = (id: string) => (thing: { id: string }) => id == thing.id
 
 function addDot() {
-	crosshair.value.dots.push(defaultDot())
+	const dot = defaultDot()
+	crosshair.value.dots.push(dot)
+	selection.value = { type: "dot", id: dot.id }
 }
 
 function addLine() {
