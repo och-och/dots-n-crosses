@@ -25,3 +25,4 @@ export const scaleEdited = new Messager<{ scale: number }>("scale-edited")
 export const gameEventEmitted = new Messager<{ events: { name: string; data: string }[] }>(
 	"game-event"
 )
+export const gameInfoUpdated = new Messager<{ info: Record<string, any> }>("game-info")

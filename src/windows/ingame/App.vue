@@ -4,7 +4,13 @@ import { useOptions } from "@/stores/options"
 import { storeToRefs } from "pinia"
 import { onMounted, ref, watch } from "vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
-import { crosshairEdited, crosshairSelected, gameEventEmitted, scaleEdited } from "@/utils/messages"
+import {
+	crosshairEdited,
+	crosshairSelected,
+	gameEventEmitted,
+	gameInfoUpdated,
+	scaleEdited
+} from "@/utils/messages"
 
 const optionsStore = useOptions()
 const { options } = storeToRefs(optionsStore)
@@ -83,8 +89,24 @@ scaleEdited.listen(({ scale: newScale }) => {
 	scale.value = newScale
 })
 
+// When to display the crosshair
+
 const isDisplayed = ref(false)
 
+// initial data
+overwolf.games.events.getInfo(({ success, res }) => {
+	if (
+		success &&
+		res.match_info &&
+		res.match_info.pseudo_match_id &&
+		res.me &&
+		res.me.health > 0
+	) {
+		isDisplayed.value = true
+	}
+})
+
+// Show/hide on match start/end
 gameEventEmitted.listen(({ events }) => {
 	for (const event of events) {
 		if (event.name == "match_start") isDisplayed.value = true
@@ -92,9 +114,14 @@ gameEventEmitted.listen(({ events }) => {
 	}
 })
 
-overwolf.games.events.getInfo(
-	({ success, res }) => success && res.match_info.pseudo_match_id && (isDisplayed.value = true)
-)
+// Show/hide on death/undeath
+gameInfoUpdated.listen(info => {
+	for (const [categody, property] of Object.entries(info)) {
+		if (categody == "me" && property.health !== undefined) {
+			isDisplayed.value = property.health > 0
+		}
+	}
+})
 </script>
 
 <template>

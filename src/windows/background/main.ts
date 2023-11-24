@@ -1,4 +1,4 @@
-import { gameEventEmitted } from "@/utils/messages"
+import { gameEventEmitted, gameInfoUpdated } from "@/utils/messages"
 import { OWGames, OWGameListener, OWWindow, OWGamesEvents } from "@overwolf/overwolf-api-ts"
 
 const VALORANT_ID = 21640
@@ -39,7 +39,7 @@ async function launch() {
 function listenForGameData() {
 	const features = [
 		// "gep_internal",
-		// "me",
+		"me",
 		// "game_info",
 		"match_info"
 		// "kill",
@@ -52,7 +52,7 @@ function listenForGameData() {
 				gameEventEmitted.send(event)
 			},
 			onInfoUpdates(info) {
-				// console.log("INFO", info)
+				gameInfoUpdated.send(info)
 			}
 		},
 		features,
