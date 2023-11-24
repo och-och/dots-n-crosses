@@ -7,10 +7,13 @@ import IconNew from "@/components/icons/IconNew.vue"
 import IconSelect from "@/components/icons/IconSelect.vue"
 import IconEdit from "@/components/icons/IconEdit.vue"
 import IconDelete from "@/components/icons/IconDelete.vue"
-import { crosshairSelected } from "@/utils/messages"
+import { crosshairSelected, scaleEdited } from "@/utils/messages"
 import { validateCrosshair } from "@/utils/crosshairValidator"
 import { promisify } from "@/utils/promisify"
 import { tryExpression } from "@/utils/tryExpression"
+import ShapeEditor from "@/components/ShapeEditor.vue"
+import NumberInput from "@/components/NumberInput.vue"
+import { ref } from "vue"
 
 const crosshairsStore = useCrosshairs()
 const { crosshairs } = storeToRefs(crosshairsStore)
@@ -18,7 +21,7 @@ const { deleteCrosshair, loadCrosshairs, addCrosshair } = crosshairsStore
 
 const optionsStore = useOptions()
 const { options } = storeToRefs(optionsStore)
-const { useCrosshair } = optionsStore
+const { useCrosshair, save: saveOptions } = optionsStore
 
 async function selectCrosshair(crosshair: Crosshair) {
 	useCrosshair(crosshair)
@@ -48,6 +51,13 @@ async function pasteCrosshair() {
 		() => addCrosshair(crosshair),
 		() => alert("Failed to save the crosshair 😔")
 	)
+}
+
+async function setScale(scale: number) {
+	console.log("setting scale", scale)
+	options.value.scale = scale
+	await saveOptions()
+	scaleEdited.send({ scale })
 }
 </script>
 
@@ -95,6 +105,20 @@ async function pasteCrosshair() {
 						<!-- Delete -->
 					</button>
 				</div>
+			</div>
+		</div>
+		<div class="crosshair-list">
+			<div class="options">
+				<ShapeEditor>
+					<NumberInput
+						title="Scale"
+						:min="0.1"
+						:max="10"
+						:step="0.1"
+						:model-value="options.scale"
+						@update:model-value="setScale"
+					/>
+				</ShapeEditor>
 			</div>
 		</div>
 	</main>

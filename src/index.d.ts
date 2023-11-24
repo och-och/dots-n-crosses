@@ -5,6 +5,7 @@ export {}
 declare global {
 	interface Options {
 		selectedCrosshair: string
+		scale: number
 	}
 
 	interface Crosshair {

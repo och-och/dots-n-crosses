@@ -4,8 +4,9 @@ import { defineStore } from "pinia"
 import { ref } from "vue"
 
 export const useOptions = defineStore("options", () => {
-	const options = ref({
-		selectedCrosshair: ""
+	const options = ref<Options>({
+		selectedCrosshair: "",
+		scale: 1
 	})
 
 	async function loadOptions() {

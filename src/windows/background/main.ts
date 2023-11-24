@@ -58,46 +58,7 @@ function listenForGameData() {
 		features,
 		5
 	).start()
-
-	// overwolf.games.events.getInfo(info => console.log("Game info", info))
-
-	// overwolf.games.onGameInfoUpdated.addListener(info => console.log("GAMEINFO", info))
-
-	// overwolf.games.events.onInfoUpdates2.addListener(({ info, feature }) => {
-	// 	console.log("INFO", info, feature)
-	// })
-
-	// overwolf.games.events.onNewEvents.addListener(({ events }) => {
-	// 	console.log("EVENTS", events)
-	// 	// for (const event of events) {
-	// 	// 	if (event.name == "match_start") isDisplayed.value = true
-	// 	// 	if (event.name == "match_end") isDisplayed.value = false
-	// 	// }
-	// })
-
-	// overwolf.games.events.onError.addListener((error) => console.error("ERROR", error))
-
-	// setTimeout(setFeatures, 1000)
 }
-
-// function setFeatures() {
-// const features = [
-// 	"gep_internal",
-// 	"me",
-// 	"game_info",
-// 	"match_info",
-// 	"kill",
-// 	"death"
-// ]
-//
-// overwolf.games.events.setRequiredFeatures(features, ({ error, supportedFeatures }) => {
-// 	if (error) {
-// 		console.error("Oh no features can't be set!", error)
-// 		return setTimeout(setFeatures, 1000);
-// 	}
-// 	console.log("Features set!", supportedFeatures)
-// })
-// }
 
 function createTrayIcon() {
 	const actions: { [action: string]: (() => void) | undefined } = {

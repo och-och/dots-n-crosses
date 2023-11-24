@@ -21,6 +21,7 @@ class Messager<T> {
 
 export const crosshairSelected = new Messager<{ id: string }>("crosshair-selected")
 export const crosshairEdited = new Messager<{ crosshair: Crosshair }>("crosshair-edited")
+export const scaleEdited = new Messager<{ scale: number }>("scale-edited")
 export const gameEventEmitted = new Messager<{ events: { name: string; data: string }[] }>(
 	"game-event"
 )

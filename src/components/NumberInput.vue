@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { computed, toRefs } from "vue"
+
 const emit = defineEmits<{
 	(e: "update:model-value", modelValue: number): void
 }>()
 
-withDefaults(
+const props = withDefaults(
 	defineProps<{
 		modelValue?: number
 		title?: string
@@ -16,12 +18,19 @@ withDefaults(
 		title: "Value",
 		min: 0,
 		max: 0,
-		step: 0
+		step: 1
 	}
 )
 
+const { modelValue, step } = toRefs(props)
+
+const fixed = computed(() =>
+	modelValue.value.toFixed(Math.max(-Math.floor(Math.log10(step.value)), 0))
+)
+const rounded = computed(() => Number.parseFloat(fixed.value))
+
 function update(event: Event) {
-	const value = Number.parseInt((event.target as HTMLInputElement).value)
+	const value = Number.parseFloat((event.target as HTMLInputElement).value)
 	emit("update:model-value", value)
 }
 </script>
@@ -37,7 +46,7 @@ function update(event: Event) {
 					class="number-button"
 					type="button"
 					tabindex="-1"
-					@click="$emit('update:model-value', modelValue - 1)"
+					@click="$emit('update:model-value', rounded - step)"
 				>
 					-
 				</button>
@@ -46,27 +55,20 @@ function update(event: Event) {
 					:min="min"
 					:max="max"
 					:step="step"
-					:value="modelValue"
+					:value="fixed"
 					@input="update($event)"
 				/>
 				<button
 					class="number-button"
 					type="button"
 					tabindex="-1"
-					@click="$emit('update:model-value', modelValue + 1)"
+					@click="$emit('update:model-value', rounded + step)"
 				>
 					+
 				</button>
 			</div>
 		</div>
-		<input
-			type="range"
-			:min="min"
-			:max="max"
-			:step="step"
-			:value="modelValue"
-			@input="update($event)"
-		/>
+		<input type="range" :min="min" :max="max" :step="step" @input="update($event)" />
 	</div>
 </template>
 

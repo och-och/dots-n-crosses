@@ -2,9 +2,9 @@
 import { useCrosshairs } from "@/stores/crosshairs"
 import { useOptions } from "@/stores/options"
 import { storeToRefs } from "pinia"
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 import DisplayCrosshair from "@/components/DisplayCrosshair.vue"
-import { crosshairEdited, crosshairSelected, gameEventEmitted } from "@/utils/messages"
+import { crosshairEdited, crosshairSelected, gameEventEmitted, scaleEdited } from "@/utils/messages"
 
 const optionsStore = useOptions()
 const { options } = storeToRefs(optionsStore)
@@ -74,6 +74,15 @@ crosshairEdited.listen(({ crosshair: newCrosshair }) => {
 	crosshair.value = newCrosshair
 })
 
+const scale = ref(options.value.scale)
+
+watch(options, () => (scale.value = options.value.scale))
+
+scaleEdited.listen(({ scale: newScale }) => {
+	console.log(`Scale has been edited ${newScale}`)
+	scale.value = newScale
+})
+
 const isDisplayed = ref(false)
 
 gameEventEmitted.listen(({ events }) => {
@@ -97,7 +106,11 @@ overwolf.games.events.getInfo(
 			<DisplayCrosshair :crosshair="fallbackCrosshair" />
 			<p>Error loading crosshair...</p>
 		</div>
-		<DisplayCrosshair v-else :crosshair="crosshair" />
+		<DisplayCrosshair
+			v-else
+			:crosshair="crosshair"
+			:style="`transform: scale(${scale || 1})`"
+		/>
 	</main>
 </template>
 

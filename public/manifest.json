@@ -67,14 +67,6 @@
 					"width": 300,
 					"height": 300
 				},
-				"min_size": {
-					"width": 300,
-					"height": 300
-				},
-				"max_size": {
-					"width": 300,
-					"height": 300
-				},
 				"show_in_taskbar": false,
 				"clickthrough": true,
 				"style": "inputPassThrough",
