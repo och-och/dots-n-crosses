@@ -68,7 +68,7 @@ function update(event: Event) {
 				</button>
 			</div>
 		</div>
-		<input type="range" :min="min" :max="max" :step="step" @input="update($event)" />
+		<input type="range" :min="min" :max="max" :step="step" :value="modelValue" @input="update($event)" />
 	</div>
 </template>
 
