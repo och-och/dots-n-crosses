@@ -13,7 +13,8 @@
 		"description": "The cool crosshair app"
 	},
 	"permissions": [
-		"Tray"
+		"Tray",
+		"Clipboard"
 	],
 	"data": {
 		"game_targeting": {
