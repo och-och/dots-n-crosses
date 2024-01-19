@@ -14,6 +14,15 @@ const launchOriginsToOpenMainWindow = [
 	"urlscheme"
 ]
 
+const features = [
+	"gep_internal",
+	"me",
+	"game_info",
+	"match_info",
+	"kill",
+	"death"
+]
+
 let mainWindow: OWWindow
 let ingameWindow: OWWindow
 let gameListener: OWGameListener
@@ -21,10 +30,12 @@ let gameListener: OWGameListener
 launch()
 
 async function launch() {
-	mainWindow = new OWWindow("MainWindow")
-	ingameWindow = new OWWindow("IngameWindow")
+	// await setRequiredFeatures(features)
 	gameListener = new OWGameListener({ onGameStarted, onGameEnded })
 	gameListener.start()
+
+	mainWindow = new OWWindow("MainWindow")
+	ingameWindow = new OWWindow("IngameWindow")
 
 	createTrayIcon()
 
@@ -37,15 +48,6 @@ async function launch() {
 }
 
 function listenForGameData() {
-	const features = [
-		// "gep_internal",
-		"me",
-		// "game_info",
-		"match_info"
-		// "kill",
-		// "death"
-	]
-
 	new OWGamesEvents(
 		{
 			onNewEvents(event) {
@@ -58,6 +60,30 @@ function listenForGameData() {
 		features,
 		5
 	).start()
+}
+
+async function setRequiredFeatures(features: string[], max_retries = 10) {
+	let tries = 1
+
+	while ( tries <= max_retries ) {
+		const result: any = await new Promise(resolve => {
+			overwolf.games.events.setRequiredFeatures(features, (v:any)=>resolve(v))
+		})
+
+		if ( result.success === true ) {
+			// make sure our required features were registered
+			return (result.supportedFeatures.length > 0)
+		}
+
+		// wait 3 sec before retry
+		await new Promise(resolve => {
+			setTimeout(resolve, 3000)
+		})
+		tries++
+	}
+
+	console.warn('setRequiredFeatures(): failure after '+ tries +' tries')
+	return false
 }
 
 function createTrayIcon() {

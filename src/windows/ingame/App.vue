@@ -94,16 +94,28 @@ scaleEdited.listen(({ scale: newScale }) => {
 const isDisplayed = ref(false)
 
 // initial data
-overwolf.games.events.getInfo(({ success, res }) => {
-	if (
-		success &&
-		res.match_info &&
-		res.match_info.pseudo_match_id &&
-		res.me &&
-		res.me.health > 0
-	) {
-		isDisplayed.value = true
-	}
+onMounted(() => {
+	overwolf.games.events.getInfo(({ success, res }) => {
+		if (
+			success &&
+			res?.match_info &&
+			res?.match_info.pseudo_match_id &&
+			res?.me &&
+			res?.me.health > 0
+		) {
+			isDisplayed.value = true
+		}
+		else {
+			console.log(
+				success,
+				res,
+				res?.match_info,
+				res?.match_info?.pseudo_match_id,
+				res?.me,
+				res?.me?.health
+			)
+		}
+	})
 })
 
 // Show/hide on match start/end
