@@ -71,8 +71,7 @@
 				"show_in_taskbar": false,
 				"clickthrough": true,
 				"style": "inputPassThrough",
-				"in_game_only": true,
-				"bottommost": true
+				"in_game_only": true
 			}
 		}
 	}
