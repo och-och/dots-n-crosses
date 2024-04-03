@@ -62,29 +62,29 @@ function listenForGameData() {
 	).start()
 }
 
-async function setRequiredFeatures(features: string[], max_retries = 10) {
-	let tries = 1
+// async function setRequiredFeatures(features: string[], max_retries = 10) {
+// 	let tries = 1
 
-	while ( tries <= max_retries ) {
-		const result: any = await new Promise(resolve => {
-			overwolf.games.events.setRequiredFeatures(features, (v:any)=>resolve(v))
-		})
+// 	while ( tries <= max_retries ) {
+// 		const result: any = await new Promise(resolve => {
+// 			overwolf.games.events.setRequiredFeatures(features, (v:any)=>resolve(v))
+// 		})
 
-		if ( result.success === true ) {
-			// make sure our required features were registered
-			return (result.supportedFeatures.length > 0)
-		}
+// 		if ( result.success === true ) {
+// 			// make sure our required features were registered
+// 			return (result.supportedFeatures.length > 0)
+// 		}
 
-		// wait 3 sec before retry
-		await new Promise(resolve => {
-			setTimeout(resolve, 3000)
-		})
-		tries++
-	}
+// 		// wait 3 sec before retry
+// 		await new Promise(resolve => {
+// 			setTimeout(resolve, 3000)
+// 		})
+// 		tries++
+// 	}
 
-	console.warn('setRequiredFeatures(): failure after '+ tries +' tries')
-	return false
-}
+// 	console.warn('setRequiredFeatures(): failure after '+ tries +' tries')
+// 	return false
+// }
 
 function createTrayIcon() {
 	const actions: { [action: string]: (() => void) | undefined } = {
